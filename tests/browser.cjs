@@ -19,6 +19,11 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
     await page.clock.install({time:new Date('2026-11-17T10:00:00+09:00')});
     const click=action=>page.locator('[data-do="'+action+'"]').click({timeout:12000});
     const text=(part)=>page.getByText(part,{exact:false}).first().waitFor({state:'visible',timeout:12000});
+    const showExam=async()=>{
+      const box=page.locator('.exam-tools details');
+      if(!await box.getAttribute('open')&&await box.locator('summary').isVisible()&&!await box.evaluate(x=>x.open))
+        await box.locator('summary').click();
+    };
     const waitMedia=async(selector,prop,limit)=>{
       const media=page.locator(selector);
       try { await media.waitFor({state:'visible',timeout:4500}); }
@@ -85,12 +90,55 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
         await context.setOffline(false);
       }
       await page.goto(loopback||link(process.env.QUIZ_PRIVATE_HTML),{timeout:60000});
-      await page.getByText('今天练哪一组？').waitFor({timeout:55000});
+      await page.getByRole('heading',{name:'学会韩国题怎么判断'}).waitFor({timeout:55000});
       const bank=page.locator('#bank');
       await bank.selectOption({label:(await bank.locator('option').allTextContents()).find(x=>x.startsWith('2026-11-30'))});
       await text('未生效');
       assert(await page.locator('[data-do="exam"]').isDisabled());
       await bank.selectOption({label:(await bank.locator('option').allTextContents()).find(x=>x.startsWith('2026-03-09')&&x.includes('官方原件校验'))});
+      await text('先学最容易套错的规则');
+      assert.equal(await page.locator('#quick-learn .chapter-card').count(),6);
+      assert(await page.locator('.exam-tools details').evaluate(x=>!x.open));
+      await page.locator('#quick-learn .recommend [data-do="chapter:signals"]').click();
+      await text('第 1 / 6 题');
+      await text('做题前：本课规律');
+      await waitMedia('img.media','naturalWidth',1);
+      assert.equal(await page.locator('#feedback').count(),0);
+      assert(await page.locator('[data-do="next"]').isDisabled());
+      await page.locator('input[data-answer][value="1"]').check();
+      await page.locator('input[data-answer][value="3"]').check();
+      await click('check');
+      await text('答错了，已记入错题');
+      assert.equal(await page.locator('#feedback .option-reasons li').count(),5);
+      assert.match(await page.locator('#feedback').innerText(),/误选.*漏选/s);
+      assert(await page.locator('#prompt mark').count()>0);
+      await click('next');
+      await text('第 2 / 6 题');
+      await page.locator('input[data-answer][value="2"]').check();
+      await page.locator('input[data-answer][value="5"]').check();
+      await click('check');
+      await text('回答正确');
+      await page.locator('nav a[href="#home"]').click();
+      await click('chapter-wrong:signals');
+      await text('第 1 / 1 题');
+      await page.locator('input[data-answer][value="3"]').check();
+      await page.locator('input[data-answer][value="5"]').check();
+      await click('check');
+      await text('回答正确');
+      await click('finish-lesson');
+      await text('已练 2 / 26 道');
+      assert.equal(await page.locator('[data-do="chapter-wrong:signals"]').count(),0);
+      await page.locator('#lookup-form input').fill('儿童保护区');
+      await page.locator('#lookup-form button').click();
+      await text('显示 24 条');
+      await page.locator('#lookup-form input').fill('190');
+      await page.locator('#lookup-form button').click();
+      await click('one:190');
+      await page.locator('input[data-answer][value="2"]').check();
+      await click('check');
+      await text('逐项排除');
+      await page.locator('nav a[href="#home"]').click();
+      console.log('快学通过：六课、即时中文诊断、错题回练、学完保留进度、官方题号和关键词查找');
       await page.locator('#media').selectOption('image');
       await click('practice:sequence');
       await waitMedia('img.media','naturalWidth',1);
@@ -103,7 +151,9 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
         await waitMedia('video.media','currentTime',0.01);
         if(loopback)assert((await page.locator('video').evaluate(v=>v.currentSrc)).startsWith(loopback+'media/'));
         await page.locator('nav a[href="#home"]').click();
-      }else{
+      }
+      await showExam();
+      if(process.env.QUIZ_SKIP_VIDEO_TEST){
         await page.locator('#exam-video').uncheck();
       }
       await click('exam');
@@ -117,6 +167,7 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
       await text('已到时自动交卷');
       assert.equal(await page.getByText('本次错题与未答题').count(),1);
       await page.locator('nav a[href="#home"]').click();
+      await showExam();
       await page.locator('#license').selectOption('1');
       await click('exam');
       await text('模拟考试 · 一类普通');

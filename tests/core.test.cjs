@@ -4,6 +4,7 @@ const vm=require('node:vm');
 const fs=require('node:fs');
 const {createHash}=require('node:crypto');
 const Q=require('../src/core.js');
+const Coach=require('../src/coach.js');
 const {make,manifest}=require('./fixture.cjs');
 test('核验 SHA-256：没有 SubtleCrypto 时与 Node 结果一致',async()=>{
   const context={module:{},TextEncoder};
@@ -80,4 +81,19 @@ test('精确多选、计时卷未答、复习优先级与到期',async()=>{
   assert.deepEqual(Q.practicePool(p,progressed,'wrong',{},now).map(q=>q.question_id),['2','1']);
   assert.deepEqual(Q.practicePool(p,progressed,'due',{},now+70e4).map(q=>q.question_id),['2','1']);
   assert.equal(Q.attempt(Q.attempt(null,true,now),true,now+Q.DAY).due,now+4*Q.DAY);
+});
+
+test('逐题讲解区分选对、误选和漏选，反向题提示不泄露答案',()=>{
+  const q={...make().questions[1],prompt_zh:'下列哪两项不正确？题中有儿童保护区。'};
+  assert.deepEqual(Coach.verdict(q,['1','2']).map(r=>r.label),['选对了','误选：这项不该选','漏选：这项该选']);
+  assert(Coach.keyTerms(q).includes('儿童保护区'));
+  assert.match(Coach.signal(q),/不正确/);
+  assert(!Coach.signal(q).includes('1、3'));
+});
+
+test('可以按官方题号和多个关键词查题，结果有上限',()=>{
+  const qs=make('2026-03-09',45).questions;
+  assert.equal(Coach.find(qs,'题号 002')[0].question_id,'2');
+  assert.equal(Coach.find(qs,'测试 专题').length,24);
+  assert.deepEqual(Coach.find(qs,'无此条件'),[]);
 });

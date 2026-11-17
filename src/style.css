@@ -66,5 +66,32 @@ summary{cursor:pointer;font-weight:700}
 .foot{border-top:1px solid var(--line);padding-block:12px 23px;color:var(--muted);font-size:13px}
 .notice{position:fixed;bottom:max(12px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:12px 16px;border-radius:12px;width:max-content;max-width:calc(100% - 28px);box-shadow:0 4px 24px #152e2c44;z-index:3}
 .import-card input{max-width:100%;width:100%;margin-block:7px}
+.chapter-grid,.coaching-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.chapter-card,.coaching-grid article,.coaching-tip{padding:15px;border:1px solid var(--line);border-radius:12px;background:#f7fbf9}
+.chapter-card p:last-of-type,.coaching-grid p,.coaching-tip p{margin-bottom:0}
+.chapter-card .row{margin-top:12px}
+.recommend{background:var(--mist);border-radius:12px;margin:13px 0;padding:13px 15px}
+.lookup{flex:1}
+.lookup input{height:44px;border:1px solid var(--line);border-radius:9px;padding-inline:10px;width:100%;min-width:0;color:var(--ink);background:var(--paper)}
+#lookup-form{align-items:end}
+.lookup-results:not(:empty){margin-top:12px}
+.lookup-list{display:grid;gap:6px}
+.lookup-item{text-align:left;border:1px solid var(--line);border-radius:9px;padding:8px 10px;background:#f7fbf9;color:var(--ink);display:flex;align-items:center;gap:8px}
+.lookup-item .pill{flex:none}
+.lesson-brief,.exam-tools details{border-top:0}
+.lesson-brief{margin-top:13px;background:var(--mist);border-radius:12px;padding:11px 13px}
+.lesson-brief p{margin:8px 0 0}
+mark{background:#ffef9c;color:var(--ink);border-radius:3px}
+.answer-feedback{scroll-margin-top:14px;border:1px solid var(--line);border-left:5px solid var(--teal);background:#f7fbf9;padding:clamp(13px,3vw,22px);border-radius:12px;margin-block:16px}
+.feedback-miss{border-left-color:var(--danger)}
+.feedback-miss h2{color:var(--danger)}.feedback-pass h2{color:var(--teal)}
+.answer-feedback h3{margin-top:8px}
+.coaching-grid,.coaching-tip{margin-block:12px}
+.option-verdict{display:block;font-size:13px;color:var(--muted);margin-top:5px}
+.option.ok .option-verdict{color:var(--teal)}.option.miss .option-verdict{color:var(--danger)}
+.option-reasons{display:grid;gap:6px;padding:0;list-style:none}
+.option-reasons li{border:1px solid var(--line);padding:8px 10px;border-radius:8px;background:white}
+.option-reasons li strong{display:block;font-size:14px}
+.option-reasons li.reason-yes strong{color:var(--teal)}
 @media(max-width:540px){.mast-inner{gap:4px}.stats{grid-template-columns:repeat(2,1fr)}.row>.control{flex:1}nav a{padding-inline:9px}}
 @media(prefers-reduced-motion:no-preference){.btn:hover{filter:brightness(.96)}}

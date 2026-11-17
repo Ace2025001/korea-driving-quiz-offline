@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const payload=document.getElementById('app-data');
-  const {manifests,rules,banks:embedded,assets}=JSON.parse(payload.textContent);
+  const {manifests,rules,coaching,banks:embedded,assets}=JSON.parse(payload.textContent);
   payload.remove();
   const localVideos=new Map(), loopback=location.origin==='http://127.0.0.1:8787';
   const videoKey=(version,id)=>version+'/'+id;
@@ -18,7 +18,8 @@
   let examVideo=!!document.createElement('video').canPlayType('video/mp4');
   let filters={topic:'',trap:'',media:'',audit:'verified',incomplete:false}, examView=null;
   const labels={sequence:'顺序练习',random:'随机练习',wrong:'历史错题',favorite:'我的收藏',due:'到期复习',intensive:'考前集中复习'};
-  const sectionLabels={home:'练习',rules:'规则对照',data:'数据管理'};
+  const chapterById=new Map(coaching.map(chapter=>[chapter.id,chapter]));
+  const chapterByQuestion=new Map(coaching.flatMap(chapter=>chapter.order.map(id=>[id,chapter])));
   const scorePolicy='官方公开说明确认从题库出题，共 40 题、40 分钟；一类普通合格线 70 分，二类普通 60 分。应用从已核验且素材齐全的题目中自行随机组卷，可选择加入一道视频题。未核实官方逐题分值及题型配比，因此只报告答对、答错与未答题数。';
   const movieSite='https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovieList.do?menuCd=MN-PO-1153';
   const route=()=>['home','rules','data','quiz','result'].includes(location.hash.slice(1))?location.hash.slice(1):'home';
@@ -87,10 +88,52 @@
     return {topic:filters.topic||null,trap:filters.trap||null,media:filters.media||null,
       audit:filters.audit,incomplete:filters.incomplete};
   }
+  function learningHome(pack){
+    const entries=coaching.map(c=>[c,Coach.chapterQuestions(pack,c)]).filter(([,qs])=>qs.length);
+    if(!entries.length)return '';
+    const done=qs=>qs.filter(q=>pstats(q.question_id,pack.key).attempts>0).length;
+    const total=entries.reduce((n,[,qs])=>n+qs.length,0);
+    const complete=entries.reduce((n,[,qs])=>n+done(qs),0);
+    const next=entries.find(([,qs])=>done(qs)<qs.length)||entries[0];
+    return '<section id="quick-learn" class="panel"><div class="row between"><div><p class="kicker">中国驾照 → 韩国二类普通 · 2종 보통</p><h2>先学最容易套错的规则</h2></div>'+
+      '<span class="pill">已练 '+complete+' / '+total+' 道</span></div>'+
+      '<p class="muted">选一个专题，先读规律，再用真题练。每题答完都有中文解析，逐项告诉你为什么该选或不该选。不限时。</p>'+
+      '<div class="recommend row between"><div><span class="small muted">推荐接着学</span><br><strong>'+E(next[0].title)+'</strong></div>'+
+      button('开始这一课','chapter:'+next[0].id,'primary')+'</div>'+
+      '<div class="chapter-grid">'+entries.map(([c,qs],i)=>{
+        const finished=done(qs), wrong=qs.filter(q=>pstats(q.question_id,pack.key).attempts&&pstats(q.question_id,pack.key).streak===0).length;
+        return '<article class="chapter-card"><p class="kicker">第 '+(i+1)+' 课 · '+qs.length+' 题</p><h3>'+E(c.title)+'</h3><p>'+E(c.lead)+'</p>'+
+          '<p class="small muted">已练 '+finished+'/'+qs.length+(wrong?' · 待纠正 '+wrong+' 道':'')+'</p>'+
+          '<div class="row">'+button(finished===0?'学这课':finished===qs.length?'重温这课':'继续这课','chapter:'+c.id,'soft')+
+          (wrong?button('只练本课错题','chapter-wrong:'+c.id):'')+'</div></article>';
+      }).join('')+'</div></section>';
+  }
+  function lookupPanel(){
+    return '<section class="panel"><p class="kicker">查一道题 · 可对照手机错题</p><h2>用题号或关键词找题</h2>'+
+      '<p class="muted">不同 App 的题号可能不同。优先输入题干里的几个字，例如「右转信号灯」或「儿童保护区」。</p>'+
+      '<form id="lookup-form" class="row"><label class="control lookup"><span class="small">官方题号或题干关键词</span><input name="query" type="search" maxlength="80" placeholder="例如 693 或 右转信号灯" required></label>'+
+      '<button class="btn soft" type="submit">查题</button></form><div id="lookup-results" class="lookup-results" aria-live="polite"></div></section>';
+  }
+  function highlight(prompt,terms) {
+    const hits=[];
+    for(const term of terms){
+      let k=prompt.indexOf(term);
+      while(k!==-1){hits.push([k,k+term.length]);k=prompt.indexOf(term,k+term.length);}
+    }
+    hits.sort((a,b)=>a[0]-b[0]||b[1]-a[1]);
+    let offset=0,out='';
+    for(const [a,b] of hits){
+      if(a<offset)continue;
+      out+=E(prompt.slice(offset,a))+'<mark>'+E(prompt.slice(a,b))+'</mark>';
+      offset=b;
+    }
+    return out+E(prompt.slice(offset));
+  }
   function dashboard(){
     const pack=current();
-    if(!pack) return '<section class="hero"><p class="kicker">韩国驾照 · 中文离线练习</p><h1>把官方真题带在身边</h1><p>导入韩国道路交通公团（KoROAD）的中文题库，即可离线练题、做模拟考试，并保存错题。</p></section>'+
-      '<section class="panel"><h2>先添加一个题库</h2><p>公开版本不捆绑官方题目和素材。可用仓库附带的工具在本地转换两版官方 PDF；已经有私人题库 JSON 可直接导入。</p><div class="row"><a class="btn primary" href="#data">导入题库</a><a class="btn" href="#rules">先读规则对照</a></div></section>';
+    if(!pack) return '<section class="hero"><p class="kicker">韩国二类普通 · 中文离线学习</p><h1>学会韩国题怎么判断</h1><p>如果你已经会开车，先学韩国考试中容易套错的规定，然后一题一题练。</p></section>'+
+      '<section class="panel"><h2>先添加一个题库</h2><p>公开版本不捆绑官方题目和素材。可用仓库附带的工具在本地转换两版官方 PDF；已经有私人题库 JSON 可直接导入。</p><div class="row"><a class="btn primary" href="#data">导入题库</a><a class="btn" href="#rules">先读规则对照</a></div></section>'+
+      '<section class="panel"><h2>快速学的六个专题</h2><div class="chapter-grid">'+coaching.map(c=>'<article class="chapter-card"><h3>'+E(c.title)+'</h3><p>'+E(c.lead)+'</p></article>').join('')+'</div></section>';
     const progress=fetchStats(), qs=pack.bank.questions, stats=qs.map(q=>pstats(q.question_id)), a=stats.reduce((x,s)=>x+s.attempts,0), c=stats.reduce((x,s)=>x+s.correct,0);
     const cov=coverage(pack);
     const mk=(value,label)=>'<div class="stat"><strong>'+E(value)+'</strong><span>'+label+'</span></div>';
@@ -103,10 +146,11 @@
     const last=study.exams[pack.key]?.at(0);
     const historic=manifestOptions().filter(([v,m])=>m.effective_date<=Quiz.koreaDay()).at(-1)?.[0];
     const future=pack.bank.effective_date>Quiz.koreaDay();
-    return '<section class="hero"><p class="kicker">学习台 · '+E(shownVersion(pack))+'</p><h1>今天练哪一组？</h1><p>用错题找弱项，用规则理解答案。学习记录按题库版本分别保存。</p></section>'+
+    return '<section class="hero"><p class="kicker">学习台 · '+E(shownVersion(pack))+'</p><h1>学会韩国题怎么判断</h1><p>你已经会开车，这里练的是怎么用韩国的规定读题。做完一道，当场看对错和为什么。</p></section>'+
+      learningHome(pack)+lookupPanel()+
       '<section class="grid stats" aria-label="学习统计">'+mk(number(stats.filter(s=>s.attempts).length)+' / '+number(qs.length),'已练 / 导入题数')+
       mk(percent(c,a),'累计正确率')+mk(number(stats.filter(s=>s.wrong).length),'历史错题')+mk(number(stats.filter(s=>s.attempts&&s.due<=Date.now()).length),'到期复习')+'</section>'+
-      '<section class="panel"><div class="row between"><div><p class="kicker">题库练习</p><h2>选一个练习模式</h2></div>'+bankSelect()+'</div>'+
+      '<section class="panel"><div class="row between"><div><p class="kicker">题库 · 每题提交后反馈</p><h2>练题库里的更多题</h2></div>'+bankSelect()+'</div>'+
       (future?note('此版本于韩国时间 '+E(pack.bank.effective_date)+' 生效。现在可预习，不能用它开始模拟考试。'):'')+
       (!future&&pack.manifest&&historic!==pack.bank.bank_version?note('这是旧版题库。较新的已生效版本为 '+E(historic)+'；准备近期考试时请优先使用新版。'):'')+
       (cov.unverified?note('待核验题目 '+number(cov.unverified)+' 道。此类题不会进入正式模拟。'):'')+
@@ -118,12 +162,12 @@
       '</div><label class="check"><input id="incomplete" type="checkbox" '+(filters.incomplete?'checked':'')+'>显示缺素材的题（练习）</label>'+
       '<div class="row">'+Object.entries(labels).map(([k,label],i)=>button(label,'practice:'+k,i===0?'primary':i<3?'':'soft')).join('')+'</div>'+
       '<p class="spaced small muted">筛选后共 '+number(Quiz.practicePool(pack,progress,'sequence',practiceFilter()).length)+' 道可练；考前模式优先选历史错题和易错考点，最多 40 道。</p></section>'+
-      '<section class="panel"><p class="kicker">计时组卷</p><h2>模拟考试</h2><p class="muted">'+E(scorePolicy)+'</p>'+
+      '<section class="panel exam-tools"><details '+(study.ongoing?'open':'')+'><summary>可选：40 题计时模拟</summary><div class="inset"><p class="muted">'+E(scorePolicy)+'</p>'+
       '<div class="row">'+select('驾照类别','license',[['1','一类普通（1종 보통）'],['2','二类普通（2종 보통）']],'2')+
       button(study.ongoing?'继续进行中的模拟':'开始 40 题模拟','exam','primary',!study.ongoing&&!canExam)+'</div>'+
       (cov.vidOK&&!study.ongoing?'<label class="check"><input id="exam-video" type="checkbox" '+(examVideo?'checked':'')+'>模拟包含视频题</label>':'')+
       (last?'<p class="spaced small">最近一次：答对 '+last.correct+'、答错 '+wrongs(last)+'、未答 '+last.blank+'。'+button('查看本次错题','history')+'</p>':'')+
-      (!canExam&&!study.ongoing?note('需要已生效的官方版本，并至少有 40 道完整可用的普通驾照题。'):'')+'</section>';
+      (!canExam&&!study.ongoing?note('需要已生效的官方版本，并至少有 40 道完整可用的普通驾照题。'):'')+'</div></details></section>';
   }
   function rulePage(){
     return '<section class="hero"><p class="kicker">法律与考点</p><h1>别让驾驶习惯替你答题</h1><p>从韩国条文理解常见易错情境。有中国法规对照的卡片会列出两国依据。</p></section>'+
@@ -156,6 +200,24 @@
     const qs=Quiz.practicePool(pack,fetchStats(),mode,practiceFilter());
     if(!qs.length){notify('当前筛选没有可练的题目，可以切换筛选条件。');return;}
     run={kind:'practice',key:pack.key,questions:qs,index:0,answers:{},checked:{},mode};
+    nav('quiz');
+  }
+  function openChapter(id,onlyWrong=false){
+    if(study.ongoing){notify('请先继续并结束当前模拟考试。');return;}
+    const pack=current(), chapter=chapterById.get(id);
+    if(!chapter||!pack)return;
+    let qs=Coach.chapterQuestions(pack,chapter);
+    if(onlyWrong)qs=qs.filter(q=>pstats(q.question_id,pack.key).attempts&&pstats(q.question_id,pack.key).streak===0);
+    if(!qs.length){notify('本课没有要练的题。');return;}
+    const index=onlyWrong?0:Math.max(0,qs.findIndex(q=>!pstats(q.question_id,pack.key).attempts));
+    run={kind:'practice',key:pack.key,questions:qs,index,answers:{},checked:{},mode:'course',chapter,onlyWrong};
+    nav('quiz');
+  }
+  function openOne(id){
+    if(study.ongoing){notify('请先继续并结束当前模拟考试。');return;}
+    const pack=current(), q=pack?.bank.questions.find(q=>q.question_id===id);
+    if(!q)return;
+    run={kind:'practice',key:pack.key,questions:[q],index:0,answers:{},checked:{},mode:'one'};
     nav('quiz');
   }
   function examObjects(active){
@@ -202,37 +264,60 @@
     }
   }
   const answerText=(q,ids)=>ids.map(i=>q.options.find(o=>o.id===i)).filter(Boolean).map(o=>E(o.id+'．'+o.text)).join('<br>')||'未作答';
-  function explanation(q){
-    return '<p><b>公布答案：</b><br>'+answerText(q,q.correct_answers)+'</p>'+
-      (q.explanation_zh?'<p><b>中文解析 / 关联考点：</b><br>'+t(q.explanation_zh)+'</p>':'<p class="small muted">中文原件未提供解析；上方为 PDF 公布答案。</p>')+
-      (q.official_explanation_ko?'<details '+(!q.explanation_zh?'open':'')+'><summary>官方解析原文（韩文 PDF 第 '+q.evidence.ko_page+' 页）</summary><p lang="ko">'+t(q.official_explanation_ko)+'</p></details>':'')+
-      (q.legal_refs.length?'<p class="small">'+q.legal_refs.map(r=>link(r.label,r.url)).join(' · ')+'</p>':'');
+  function explanation(q,pack,selected){
+    const chapter=pack?.manifest&&pack.trusted[q.question_id]?chapterByQuestion.get(q.question_id):null;
+    const lesson=chapter?.items[q.question_id];
+    const verdicts=selected?new Map(Coach.verdict(q,selected).map(v=>[v.id,v])):null;
+    const details=lesson?
+      '<div class="coaching-grid"><article><h3>为什么选这个</h3><p>'+E(lesson.why)+'</p></article><article><h3>遇到同类题怎么判断</h3><p>'+E(lesson.tip)+'</p></article></div>'+
+      '<h3>逐项排除</h3><ul class="option-reasons">'+q.options.map((o,i)=>{
+        const status=verdicts?.get(o.id), isAnswer=q.correct_answers.includes(o.id);
+        return '<li class="'+(isAnswer?'reason-yes':'')+'"><strong>'+E(o.id)+'．'+E(status?.label||(isAnswer?'公布答案':'不选'))+'</strong><span>'+E(lesson.options[i])+'</span></li>';
+      }).join('')+'</ul><p class="small">'+chapter.refs.map(r=>link(r.label,r.url)).join(' · ')+'</p>':
+      '<article class="coaching-tip"><h3>先抓题目的问法</h3><p>'+E(Coach.signal(q))+'</p></article>'+
+      (q.explanation_zh?'<p><b>中文参考：</b><br>'+t(q.explanation_zh)+'</p>':'<p class="small muted">本题尚无人工中文讲解。可核对中文公布答案'+(q.official_explanation_ko?'和下方韩文官方解析':'')+'。</p>');
+    return '<p><b>'+(pack?.trusted[q.question_id]?'公布答案':'题库答案')+'：</b><br>'+answerText(q,q.correct_answers)+'</p>'+
+      details+
+      (q.official_explanation_ko?'<details><summary>官方解析原文（韩文 PDF 第 '+q.evidence.ko_page+' 页）</summary><p lang="ko">'+t(q.official_explanation_ko)+'</p></details>':'')+
+      (!lesson&&q.legal_refs.length?'<p class="small">'+q.legal_refs.map(r=>link(r.label,r.url)).join(' · ')+'</p>':'');
   }
   function questionPage(){
     if(!run)return '<section class="panel"><p>没有进行中的练习。</p><a href="#home">返回首页</a></section>';
     const q=run.questions[run.index], id=q.question_id, pack=packs.get(run.key), exam=run.kind==='exam';
     const checked=!exam&&run.checked[id], selected=run.answers[id]||[];
+    const chapter=run.chapter;
+    const lesson=checked&&pack.manifest&&pack.trusted[id]?chapterByQuestion.get(id)?.items[id]:null;
+    const verdicts=checked?new Map(Coach.verdict(q,selected).map(v=>[v.id,v])):null;
     const completeness=pack.media[id];
     let options=q.options.map(o=>{
       const correct=checked&&q.correct_answers.includes(o.id), picked=selected.includes(o.id);
       return '<label class="option '+(correct?'ok':checked&&picked?'miss':'')+'"><input data-answer name="answer" type="'+(q.question_type==='single'?'radio':'checkbox')+'" value="'+E(o.id)+'"'+
-        (picked?' checked':'')+(checked?' disabled':'')+'><b>'+E(o.id)+'．</b><span>'+E(o.text)+(correct?' <b>✓</b>':'')+'</span></label>';
+        (picked?' checked':'')+(checked?' disabled':'')+'><b>'+E(o.id)+'．</b><span>'+(lesson?highlight(o.text,lesson.clues):E(o.text))+
+        (checked?'<span class="option-verdict">'+E(verdicts.get(o.id).label)+'</span>':'')+'</span></label>';
     }).join('');
     const mediaMarkup=material(q)?(q.media_kind==='image'?'<img id="asset" class="media" alt="题目附图">':'<video id="asset" class="media" controls preload="metadata" playsinline aria-label="视频题素材"></video>'):
       q.media_kind==='none'?'':note('缺少这道题的'+(q.media_kind==='image'?'图片':'视频')+'；用原件核对后再作答。'+(q.media_kind==='video'?' '+link('官方视频题库',movieSite):''));
     const stats=pstats(id,run.key);
     const answered=run.questions.filter(q=>run.answers[q.question_id]?.length).length;
-    return '<section class="panel"><div class="row between"><div><p class="kicker">'+E(exam?'模拟考试 · '+(study.ongoing.license==='1'?'一类普通':'二类普通'):labels[run.mode])+'</p><b>第 '+(run.index+1)+' / '+run.questions.length+' 题</b></div>'+
+    const title=exam?'模拟考试 · '+(study.ongoing.license==='1'?'一类普通':'二类普通'):chapter?'逐题讲解 · '+chapter.title:labels[run.mode]||'单题讲解';
+    const isCorrect=checked&&Quiz.sameAnswer(selected,q.correct_answers);
+    const last=run.index===run.questions.length-1;
+    return '<section class="panel"><div class="row between"><div><p class="kicker">'+E(title)+'</p><b>第 '+(run.index+1)+' / '+run.questions.length+' 题</b></div>'+
       (exam?'<output id="timer" class="timer" aria-label="剩余时间"></output>':button(stats.favorite?'取消收藏':'加入收藏','favorite','soft'))+'</div>'+
       '<progress max="'+run.questions.length+'" value="'+(run.index+1)+'" aria-label="当前题位"></progress>'+
       '<div class="row">'+pill('题号 '+id)+pill(q.question_type==='single'?'单选':'多选')+
       (exam?'':pill(pack.trusted[id]?'官方原件已核对':'待核验')+(q.media_kind!=='none'?pill(completeness):''))+'</div>'+
-      '<h1 class="question" id="prompt" tabindex="-1">'+E(q.prompt_zh)+'</h1>'+mediaMarkup+'<fieldset><legend>'+
+      (chapter&&!checked?'<details class="lesson-brief" '+(run.index===0&&!run.onlyWrong?'open':'')+'><summary>做题前：本课规律</summary><p>'+E(chapter.lead)+'</p><p class="muted">'+E(chapter.contrast)+'</p></details>':'')+
+      '<h1 class="question" id="prompt" tabindex="-1">'+(checked?highlight(q.prompt_zh,Coach.keyTerms(q,lesson?.clues)):E(q.prompt_zh))+'</h1>'+mediaMarkup+'<fieldset><legend>'+
       (q.question_type==='single'?'选择一项':'选择符合题意的全部选项')+'</legend>'+options+'</fieldset>'+
-      (!exam?(checked?note(Quiz.sameAnswer(selected,q.correct_answers)?'<b>回答正确</b>':'<b>答错了，已记入错题</b>',Quiz.sameAnswer(selected,q.correct_answers)?'good':'bad')+
-        '<div class="spaced">'+explanation(q)+'</div>':
+      (!exam?(checked?'<section id="feedback" class="answer-feedback '+(isCorrect?'feedback-pass':'feedback-miss')+'" tabindex="-1" aria-label="本题讲解"><h2>'+
+        (isCorrect?'回答正确':'答错了，已记入错题')+'</h2><p class="small muted">你的选择：'+E(selected.join('、'))+' · 正确选项：'+E(q.correct_answers.join('、'))+'</p>'+
+        (lesson?.clues?.length?'<p class="small"><b>决定答案的条件：</b> '+lesson.clues.map(pill).join(' ')+'</p>':'')+
+        explanation(q,pack,selected)+'</section>':
         button('提交答案','check','primary',!selected.length)):'')+
-      '<div class="row between spaced"><div class="row">'+button('上一题','prev','',!run.index)+button('下一题','next',checked?'primary':'',run.index===run.questions.length-1)+'</div>'+
+      '<div class="row between spaced"><div class="row">'+button('上一题','prev','',!run.index)+
+      (chapter&&last?button('结束本课，查看学习路线','finish-lesson','primary',!checked):
+        button('下一题','next',checked?'primary':'',last||!!chapter&&!checked))+'</div>'+
       (exam?button('提前交卷','submit','danger'):'<a class="btn" href="#home">结束练习</a>')+'</div>'+
       (!exam?'<p class="small muted spaced">最近练习：'+E(dateTime(stats.last))+' · 正确率：'+percent(stats.correct,stats.attempts)+' · 下次复习：'+E(dateTime(stats.due))+'</p>'+
         (pack.trusted[id]?'<p class="small muted">原件 '+E(pack.bank.bank_version)+' · PDF 第 '+q.evidence.page+' 页 · '+link('KoROAD 公告',pack.bank.source_url)+'</p>':''):'')+'</section>'+
@@ -247,7 +332,7 @@
       (res.correct===res.total?'<p>本次全部答对。</p>':res.rows.filter(r=>!r.correct).map(r=>{
         const q=qs.get(r.id);
         return '<details><summary>'+E((r.blank?'未答':'答错')+' · 题号 '+r.id)+'</summary>'+
-          (q?'<div class="inset"><p>'+E(q.prompt_zh)+'</p><p><b>你的答案：</b><br>'+answerText(q,r.selected)+'</p>'+explanation(q)+
+          (q?'<div class="inset"><p>'+E(q.prompt_zh)+'</p><p><b>你的答案：</b><br>'+answerText(q,r.selected)+'</p>'+explanation(q,pack,r.selected)+
           button('单独复习','revisit:'+r.id,'soft')+'</div>':'<p>本地没有这道题。重新导入原版本即可查看题文。</p>')+'</details>';
       }).join(''))+'</section>';
   }
@@ -427,6 +512,17 @@
     } finally {pending=false;render();}
   }
 
+  main.addEventListener('submit',ev=>{
+    if(ev.target.id!=='lookup-form')return;
+    ev.preventDefault();
+    const result=document.getElementById('lookup-results'),pack=current();
+    const query=new FormData(ev.target).get('query');
+    if(!pack||!result)return;
+    const qs=Coach.find(pack.bank.questions,query);
+    result.innerHTML=qs.length?'<p class="small muted">显示 '+qs.length+' 条 · '+E(shownVersion(pack))+'</p><div class="lookup-list">'+qs.map(q=>
+      '<button class="lookup-item" type="button" data-do="one:'+E(q.question_id)+'"><span class="pill">题号 '+E(q.question_id)+'</span><span>'+
+      E(q.prompt_zh.replace(/\s+/g,' ').slice(0,155))+'</span></button>').join('')+'</div>':'<p class="muted">没找到。试着减少关键词，或切换题库版本后再查。</p>';
+  });
   main.addEventListener('change',ev=>{
     const el=ev.target;
     if(el.matches('[data-answer]')){choose(el);return;}
@@ -444,6 +540,9 @@
     const [action,arg]=target.dataset.do.split(':');
     try{
       if(action==='practice')openPractice(arg);
+      if(action==='chapter'||action==='chapter-wrong')openChapter(arg,action==='chapter-wrong');
+      if(action==='one')openOne(arg);
+      if(action==='finish-lesson')nav('home');
       if(action==='exam')startExam();
       if(action==='next')move(run.index+1);
       if(action==='prev')move(run.index-1);
@@ -464,6 +563,9 @@
         run.checked[id]=true;
         setProgress(run.key,id,Quiz.attempt(pstats(id,run.key),Quiz.sameAnswer(choices,q.correct_answers)));
         save();render();
+        const feedback=document.getElementById('feedback');
+        feedback?.focus({preventScroll:true});
+        feedback?.scrollIntoView({block:'start'});
       }
       if(action==='rule'&&current()){
         filters={topic:'',trap:rules[+arg].title,media:'',audit:current().manifest?'verified':'all',incomplete:false};openPractice('sequence');
