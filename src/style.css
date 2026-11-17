@@ -93,5 +93,14 @@ mark{background:#ffef9c;color:var(--ink);border-radius:3px}
 .option-reasons li{border:1px solid var(--line);padding:8px 10px;border-radius:8px;background:white}
 .option-reasons li strong{display:block;font-size:14px}
 .option-reasons li.reason-yes strong{color:var(--teal)}
+.explanation-layout{grid-template-columns:1fr}
+.explanation-layout .small.muted{margin-top:9px}
+.explanation-layout article h3{margin-top:0}
+.explanation-layout article p{margin:.35em 0 .65em}
+.explanation-layout article p:last-child{margin-bottom:0}
+.translated-reason{white-space:pre-line;overflow-wrap:anywhere}
+.condition-terms{margin:4px 0 8px;gap:5px;overflow-wrap:anywhere}
+.scene{margin:0 0 10px;padding-left:18px}
+.translation-note{border-left:3px solid #d9993f;padding-left:8px}
 @media(max-width:540px){.mast-inner{gap:4px}.stats{grid-template-columns:repeat(2,1fr)}.row>.control{flex:1}nav a{padding-inline:9px}}
 @media(prefers-reduced-motion:no-preference){.btn:hover{filter:brightness(.96)}}

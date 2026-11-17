@@ -5,6 +5,7 @@ const fs=require('node:fs');
 const {createHash}=require('node:crypto');
 const Q=require('../src/core.js');
 const Coach=require('../src/coach.js');
+const Explain=require('../src/explain.js');
 const {make,manifest}=require('./fixture.cjs');
 test('核验 SHA-256：没有 SubtleCrypto 时与 Node 结果一致',async()=>{
   const context={module:{},TextEncoder};
@@ -96,4 +97,20 @@ test('可以按官方题号和多个关键词查题，结果有上限',()=>{
   assert.equal(Coach.find(qs,'题号 002')[0].question_id,'2');
   assert.equal(Coach.find(qs,'测试 专题').length,24);
   assert.deepEqual(Coach.find(qs,'无此条件'),[]);
+});
+
+test('全题讲解抓住题干限制和问法，区分题意与选项是否违法',()=>{
+  const q={...make().questions[1],media_kind:'image',
+    prompt_zh:'在下列情况下，驾驶方法中错误的是？\n■ 儿童保护区\n■ 没有信号灯的人行横道',
+    options:[{id:'1',text:'先停车'},{id:'2',text:'查看对向'},{id:'3',text:'慢行即可'}],correct_answers:['3']};
+  const x=Explain.forQuestion(q);
+  assert.equal(x.mode.kind,'reverse');
+  assert(x.key.includes('儿童保护区'));
+  assert(x.show.includes('没有信号灯的人行横道'));
+  assert.equal(x.topic.name,'学校附近的行人');
+  const official={source:'ko',translated:[['③','该处须完全停车。'],['','依据原卷。']]};
+  const notes=Explain.correction(q,['1'],official);
+  assert.deepEqual(notes.map(n=>n.label),['误选：这项不该选','漏选：这项该选']);
+  assert.equal(notes[1].reason,'该处须完全停车。');
+  assert.equal(Explain.correction(q,['1'],null)[1].reason,'');
 });

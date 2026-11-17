@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const payload=document.getElementById('app-data');
-  const {manifests,rules,coaching,banks:embedded,assets}=JSON.parse(payload.textContent);
+  const {manifests,rules,coaching,explanationNotes,banks:embedded,assets,translations}=JSON.parse(payload.textContent);
   payload.remove();
   const localVideos=new Map(), loopback=location.origin==='http://127.0.0.1:8787';
   const videoKey=(version,id)=>version+'/'+id;
@@ -20,6 +20,17 @@
   const labels={sequence:'顺序练习',random:'随机练习',wrong:'历史错题',favorite:'我的收藏',due:'到期复习',intensive:'考前集中复习'};
   const chapterById=new Map(coaching.map(chapter=>[chapter.id,chapter]));
   const chapterByQuestion=new Map(coaching.flatMap(chapter=>chapter.order.map(id=>[id,chapter])));
+  const translation=(q,pack)=>{
+    if(!pack?.manifest||!pack.trusted[q.question_id])return null;
+    const n=q.question_id, version=pack.bank.bank_version;
+    const row=translations[version]?.[n];
+    return row?.fingerprint===pack.manifest.questions[n]?.[0]?row:null;
+  };
+  function reviewedNote(q,pack){
+    if(!pack?.manifest||!pack.trusted[q.question_id])return null;
+    const note=Quiz.own(explanationNotes,q.question_id)?explanationNotes[q.question_id]:null;
+    return note&&(!note.versions||note.versions.includes(pack.bank.bank_version))?note:null;
+  }
   const scorePolicy='官方公开说明确认从题库出题，共 40 题、40 分钟；一类普通合格线 70 分，二类普通 60 分。应用从已核验且素材齐全的题目中自行随机组卷，可选择加入一道视频题。未核实官方逐题分值及题型配比，因此只报告答对、答错与未答题数。';
   const movieSite='https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovieList.do?menuCd=MN-PO-1153';
   const route=()=>['home','rules','data','quiz','result'].includes(location.hash.slice(1))?location.hash.slice(1):'home';
@@ -95,9 +106,11 @@
     const total=entries.reduce((n,[,qs])=>n+qs.length,0);
     const complete=entries.reduce((n,[,qs])=>n+done(qs),0);
     const next=entries.find(([,qs])=>done(qs)<qs.length)||entries[0];
+    const translated=pack.bank.questions.filter(q=>translation(q,pack)).length;
     return '<section id="quick-learn" class="panel"><div class="row between"><div><p class="kicker">中国驾照 → 韩国二类普通 · 2종 보통</p><h2>先学最容易套错的规则</h2></div>'+
       '<span class="pill">已练 '+complete+' / '+total+' 道</span></div>'+
-      '<p class="muted">选一个专题，先读规律，再用真题练。每题答完都有中文解析，逐项告诉你为什么该选或不该选。不限时。</p>'+
+      '<p class="muted">选一个专题，先读规律，再用真题练。首页课程保留 26 道人工逐项讲解；其他题也可以在下方题库逐题练。不计时。</p>'+
+      (translated?'<p class="small muted"><b>本版覆盖：</b> '+total+' 道人工课题，另有 '+translated+' 道题附中文解释、题干条件和同类题判断方法。</p>':'')+
       '<div class="recommend row between"><div><span class="small muted">推荐接着学</span><br><strong>'+E(next[0].title)+'</strong></div>'+
       button('开始这一课','chapter:'+next[0].id,'primary')+'</div>'+
       '<div class="chapter-grid">'+entries.map(([c,qs],i)=>{
@@ -264,6 +277,46 @@
     }
   }
   const answerText=(q,ids)=>ids.map(i=>q.options.find(o=>o.id===i)).filter(Boolean).map(o=>E(o.id+'．'+o.text)).join('<br>')||'未作答';
+  function workingExplanation(q,pack,selected){
+    const row=translation(q,pack);
+    const reviewer=reviewedNote(q,pack);
+    const model=Explain.forQuestion(q);
+    const label=pack?.trusted[q.question_id]?'官方公布答案':'题库答案';
+    const chips=xs=>xs.map(pill).join(' ');
+    const official=row?.source==='ko';
+    const check=official&&row.checks.length>0;
+    const paragraphs=items=>items.length?'<div class="translated-reason">'+items.map(([marker,s])=>
+      '<p>'+(marker?'<b>'+E(marker)+' </b>':'')+t(s)+'</p>').join('')+'</div>':'';
+    const unchecked=new Set(official?row.check_segments:[]);
+    const consistent=official?row.translated.filter((_,i)=>!unchecked.has(i)):[];
+    const needsReview=official?row.translated.filter((_,i)=>unchecked.has(i)):[];
+    const caution=check?'<p class="small muted translation-note">译文提示：'+E(row.checks.join('；'))+'。请同时看下面的韩文原文。</p>':'';
+    const officialReason=reviewer&&official?
+      '<details><summary>查看同版官解机译</summary>'+caution+paragraphs(row.translated)+'</details>':
+      paragraphs(consistent)+(needsReview.length?'<details><summary>官解中文参考 · 部分措辞待核对</summary>'+caution+paragraphs(needsReview)+'</details>':'');
+    const intro=reviewer?'<p>'+E(reviewer.why)+'</p>'+
+      (row?.source==='none'?'<p class="small muted">同版韩文原卷此题没有解析正文；此处为有来源的补充说明。</p>':''):
+      official?'<p class="small muted">公布答案按原题库判定。下方是同版韩文官解机译；未逐条人工审核。</p>':
+      q.explanation_zh?'<p>'+t(q.explanation_zh)+'</p>':'<p class="small muted">这个题库文件没有附中文官解。可对照下方公布答案、题干条件'+(q.official_explanation_ko?'和韩文原文':'')+'。</p>';
+    const contrast=selected&&selected.length?Explain.correction(q,selected,official&&!reviewer?{...row,translated:consistent}:null):[];
+    return '<div class="coaching-grid explanation-layout">'+
+      '<article><h3>为什么这么判</h3>'+(model.mode.lead?'<p>'+E(model.mode.lead)+'</p>':'')+intro+officialReason+'</article>'+
+      '<article><h3>哪个条件决定答案</h3>'+
+      (reviewer?'<p><b>'+E(reviewer.key)+'</b></p>':'')+
+      (model.key.length?'<p class="small muted">题干要盯住：</p><div class="row condition-terms">'+chips(model.key)+'</div>':'')+
+      (model.show.length?'<p class="small muted">图注场景：</p><ul class="scene">'+model.show.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>':'')+
+      (model.optionFacts.length?'<p class="small muted">'+E(label)+'所对照的条件或动作：</p><div class="row condition-terms">'+chips(model.optionFacts)+'</div>':'')+
+      '<p>'+E(model.specific)+'</p></article>'+
+      '<article><h3>下次遇到同类题</h3>'+
+      (reviewer?'<p>'+E(reviewer.tip)+'</p>':model.topic?'<span class="pill">'+E(model.topic.name)+'</span><p>'+E(model.topic.tip)+'</p>':
+      '<p>'+E(model.specific)+'</p>')+
+      (q.question_type==='multiple'?'<p class="small muted">多选逐项核对，看看是条件不全、选错，还是漏选。</p>':'')+'</article></div>'+
+      (contrast.length?'<h3>对照你的选择</h3><ul class="option-reasons">'+contrast.map(info=>
+      '<li class="'+(info.correct?'reason-yes':'')+'"><strong>'+E(info.id)+'．'+E(info.label)+'</strong>'+
+      (info.anchor.length?'<div class="row condition-terms">'+chips(info.anchor)+'</div>':'')+
+      (info.reason?'<span>'+t(info.reason)+'</span>':'')+'</li>').join('')+'</ul>':'')+
+      (reviewer?.refs.length?'<p class="small">依据：'+reviewer.refs.map(r=>link(r.label,r.url)).join(' · ')+'</p>':'');
+  }
   function explanation(q,pack,selected){
     const chapter=pack?.manifest&&pack.trusted[q.question_id]?chapterByQuestion.get(q.question_id):null;
     const lesson=chapter?.items[q.question_id];
@@ -274,8 +327,7 @@
         const status=verdicts?.get(o.id), isAnswer=q.correct_answers.includes(o.id);
         return '<li class="'+(isAnswer?'reason-yes':'')+'"><strong>'+E(o.id)+'．'+E(status?.label||(isAnswer?'公布答案':'不选'))+'</strong><span>'+E(lesson.options[i])+'</span></li>';
       }).join('')+'</ul><p class="small">'+chapter.refs.map(r=>link(r.label,r.url)).join(' · ')+'</p>':
-      '<article class="coaching-tip"><h3>先抓题目的问法</h3><p>'+E(Coach.signal(q))+'</p></article>'+
-      (q.explanation_zh?'<p><b>中文参考：</b><br>'+t(q.explanation_zh)+'</p>':'<p class="small muted">本题尚无人工中文讲解。可核对中文公布答案'+(q.official_explanation_ko?'和下方韩文官方解析':'')+'。</p>');
+      workingExplanation(q,pack,selected);
     return '<p><b>'+(pack?.trusted[q.question_id]?'公布答案':'题库答案')+'：</b><br>'+answerText(q,q.correct_answers)+'</p>'+
       details+
       (q.official_explanation_ko?'<details><summary>官方解析原文（韩文 PDF 第 '+q.evidence.ko_page+' 页）</summary><p lang="ko">'+t(q.official_explanation_ko)+'</p></details>':'')+
@@ -287,6 +339,7 @@
     const checked=!exam&&run.checked[id], selected=run.answers[id]||[];
     const chapter=run.chapter;
     const lesson=checked&&pack.manifest&&pack.trusted[id]?chapterByQuestion.get(id)?.items[id]:null;
+    const currentTerms=checked&&!lesson?Explain.forQuestion(q).key:[];
     const verdicts=checked?new Map(Coach.verdict(q,selected).map(v=>[v.id,v])):null;
     const completeness=pack.media[id];
     let options=q.options.map(o=>{
@@ -308,7 +361,7 @@
       '<div class="row">'+pill('题号 '+id)+pill(q.question_type==='single'?'单选':'多选')+
       (exam?'':pill(pack.trusted[id]?'官方原件已核对':'待核验')+(q.media_kind!=='none'?pill(completeness):''))+'</div>'+
       (chapter&&!checked?'<details class="lesson-brief" '+(run.index===0&&!run.onlyWrong?'open':'')+'><summary>做题前：本课规律</summary><p>'+E(chapter.lead)+'</p><p class="muted">'+E(chapter.contrast)+'</p></details>':'')+
-      '<h1 class="question" id="prompt" tabindex="-1">'+(checked?highlight(q.prompt_zh,Coach.keyTerms(q,lesson?.clues)):E(q.prompt_zh))+'</h1>'+mediaMarkup+'<fieldset><legend>'+
+      '<h1 class="question" id="prompt" tabindex="-1">'+(checked?highlight(q.prompt_zh,[...Coach.keyTerms(q,lesson?.clues),...currentTerms]):E(q.prompt_zh))+'</h1>'+mediaMarkup+'<fieldset><legend>'+
       (q.question_type==='single'?'选择一项':'选择符合题意的全部选项')+'</legend>'+options+'</fieldset>'+
       (!exam?(checked?'<section id="feedback" class="answer-feedback '+(isCorrect?'feedback-pass':'feedback-miss')+'" tabindex="-1" aria-label="本题讲解"><h2>'+
         (isCorrect?'回答正确':'答错了，已记入错题')+'</h2><p class="small muted">你的选择：'+E(selected.join('、'))+' · 正确选项：'+E(q.correct_answers.join('、'))+'</p>'+
