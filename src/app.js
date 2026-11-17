@@ -95,6 +95,12 @@
     return select('当前题库','bank',[...packs.values()].sort((a,b)=>a.bank.effective_date.localeCompare(b.bank.effective_date))
       .map(p=>[p.key,shownVersion(p)]),study.active);
   }
+  function switchBank(key){
+    if(!packs.has(key)||key===study.active)return;
+    study.active=key;
+    filters={topic:'',trap:'',media:'',audit:current().manifest?'verified':'all',incomplete:false};
+    save();render();
+  }
   function practiceFilter(){
     return {topic:filters.topic||null,trap:filters.trap||null,media:filters.media||null,
       audit:filters.audit,incomplete:filters.incomplete};
@@ -107,10 +113,14 @@
     const complete=entries.reduce((n,[,qs])=>n+done(qs),0);
     const next=entries.find(([,qs])=>done(qs)<qs.length)||entries[0];
     const translated=pack.bank.questions.filter(q=>translation(q,pack)).length;
+    const versions=[...packs.values()].filter(p=>p.manifest).sort((a,b)=>a.bank.effective_date.localeCompare(b.bank.effective_date));
     return '<section id="quick-learn" class="panel"><div class="row between"><div><p class="kicker">中国驾照 → 韩国二类普通 · 2종 보통</p><h2>先学最容易套错的规则</h2></div>'+
       '<span class="pill">已练 '+complete+' / '+total+' 道</span></div>'+
       '<p class="muted">选一个专题，先读规律，再用真题练。首页课程保留 26 道人工逐项讲解；其他题也可以在下方题库逐题练。不计时。</p>'+
       (translated?'<p class="small muted"><b>本版覆盖：</b> '+total+' 道人工课题，另有 '+translated+' 道题附中文解释、题干条件和同类题判断方法。</p>':'')+
+      (versions.length>1?'<div class="row" aria-label="切换讲解题库">'+versions.map(p=>
+        '<button type="button" class="btn '+(p===pack?'soft':'')+'" data-do="set-bank:'+E(p.key)+'" aria-pressed="'+(p===pack)+'">'+
+        E(p.bank.bank_version+(p.bank.effective_date>Quiz.koreaDay()?' 预习':' 版'))+'</button>').join('')+'</div>':'')+
       '<div class="recommend row between"><div><span class="small muted">推荐接着学</span><br><strong>'+E(next[0].title)+'</strong></div>'+
       button('开始这一课','chapter:'+next[0].id,'primary')+'</div>'+
       '<div class="chapter-grid">'+entries.map(([c,qs],i)=>{
@@ -581,7 +591,7 @@
     if(el.matches('[data-answer]')){choose(el);return;}
     if(el.id==='exam-video'){examVideo=el.checked;return;}
     if(el.id==='bank'&&packs.has(el.value)){
-      study.active=el.value;filters={topic:'',trap:'',media:'',audit:current().manifest?'verified':'all',incomplete:false};save();render();return;
+      switchBank(el.value);return;
     }
     if(['topic','trap','media','audit','incomplete'].includes(el.id)){
       filters[el.id]=el.id==='incomplete'?el.checked:el.value;render();document.getElementById(el.id)?.focus();
@@ -593,6 +603,7 @@
     const [action,arg]=target.dataset.do.split(':');
     try{
       if(action==='practice')openPractice(arg);
+      if(action==='set-bank')switchBank(arg);
       if(action==='chapter'||action==='chapter-wrong')openChapter(arg,action==='chapter-wrong');
       if(action==='one')openOne(arg);
       if(action==='finish-lesson')nav('home');

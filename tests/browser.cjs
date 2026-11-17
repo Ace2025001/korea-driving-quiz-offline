@@ -121,14 +121,14 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
         await click('check');
         await text('文字读道路名，数字读建筑编号');
         await page.locator('nav a[href="#home"]').click();
-        await bank.selectOption({label:(await bank.locator('option').allTextContents()).find(x=>x.startsWith('2026-11-30'))});
+        await page.getByRole('button',{name:'2026-11-30 预习',exact:true}).click();
         await text('另有 1095 道题附中文解释');
         await lookup(1080);
         await page.locator('input[data-answer][value="2"]').check();
         await click('check');
         await text('先排除公交道和超车道');
         await page.locator('nav a[href="#home"]').click();
-        await bank.selectOption({label:(await bank.locator('option').allTextContents()).find(x=>x.startsWith('2026-03-09')&&x.includes('官方原件校验'))});
+        await page.getByRole('button',{name:'2026-03-09 版',exact:true}).click();
         console.log('两版全题中文讲解通过：条件定位、官解译文、误选漏选、原卷缺解析及新版独有题');
       }
       await text('先学最容易套错的规则');
