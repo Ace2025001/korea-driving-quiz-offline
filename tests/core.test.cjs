@@ -2,13 +2,17 @@ const test=require('node:test');
 const assert=require('node:assert/strict');
 const vm=require('node:vm');
 const fs=require('node:fs');
+const {createHash}=require('node:crypto');
 const Q=require('../src/core.js');
 const {make,manifest}=require('./fixture.cjs');
 test('核验 SHA-256：没有 SubtleCrypto 时与 Node 结果一致',async()=>{
   const context={module:{},TextEncoder};
   vm.runInNewContext(fs.readFileSync('src/core.js','utf8'),context);
-  for(const x of ['', 'abc','测试 🚦'.repeat(21),'x'.repeat(56),'y'.repeat(64)])
-    assert.equal(await context.module.exports.digest(x),await Q.digest(x));
+  for(const x of ['', 'abc','测试 🚦'.repeat(21),'x'.repeat(56),'y'.repeat(64),'媒体'.repeat(5000)]){
+    const expected=createHash('sha256').update(JSON.stringify(x)).digest('hex');
+    assert.equal(await context.module.exports.digest(x),expected);
+    assert.equal(await Q.digest(x),expected);
+  }
 });
 test('不接受 JSON 自称的核验状态；题文、分项答案或页码变动均不能入模拟',async()=>{
   const bank=make(), trusted=await manifest(bank);

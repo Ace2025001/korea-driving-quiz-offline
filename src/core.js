@@ -28,7 +28,9 @@ const Quiz = (() => {
   const tags = x => Array.isArray(x) && x.length <= 24 && x.every(t => str(t, 80)) && uniq(x);
   const encode = x => new TextEncoder().encode(x);
   async function sha(bytes) {
-    if (globalThis.crypto?.subtle) {
+    // 每道题都有几个短文本指纹。短输入避免等待浏览器跨线程调度；
+    // 大媒体使用原生 SHA-256，下面的局部批次限制解码并发与峰值内存。
+    if (bytes.byteLength>8192 && globalThis.crypto?.subtle) {
       const hash = await crypto.subtle.digest('SHA-256', bytes);
       return Array.from(new Uint8Array(hash), b => b.toString(16).padStart(2,'0')).join('');
     }
@@ -91,7 +93,7 @@ const Quiz = (() => {
     const matchedSource = manifest && input.effective_date===manifest.effective_date &&
       input.attachment_sha256===manifest.attachment_sha256 && input.source_url===manifest.source_url;
     const questions=[], seen=new Set(), trusted=Object.create(null), ready=Object.create(null), media=Object.create(null);
-    for (const [i,item] of input.questions.entries()) {
+    async function validateQuestion(item,i) {
       const f = (ok,msg) => require(ok,'第 '+(i+1)+' 条：'+msg);
       f(record(item)&&id(item.question_id)&&!seen.has(item.question_id),'题号无效或重复');
       seen.add(item.question_id);
@@ -143,7 +145,10 @@ const Quiz = (() => {
       media[q.question_id]=q.media_kind==='none'?'无素材':!assetHash?'缺素材':
         trusted[q.question_id] && m[1]===assetHash ? '素材已核验':'素材未核验';
       ready[q.question_id]=trusted[q.question_id] && (q.media_kind==='none'||media[q.question_id]==='素材已核验');
-      questions.push(q);
+      return q;
+    }
+    for(let i=0;i<input.questions.length;i+=12){
+      questions.push(...await Promise.all(input.questions.slice(i,i+12).map((item,j)=>validateQuestion(item,i+j))));
     }
     const bank={schema_version:'1.0',bank_version:input.bank_version,effective_date:input.effective_date,source_url:input.source_url,attachment_sha256:input.attachment_sha256??null,questions};
     // 未知题库的每次内容修改都是独立题库。已知题库只在所有题号与文字受信时按原件身份合并。
@@ -182,12 +187,12 @@ const Quiz = (() => {
     if(mode==='intensive') qs=qs.filter(q=>r(q).wrong || q.trap_tags.length || r(q).attempts&&r(q).due<=now).sort(priority).slice(0,40);
     return qs;
   }
-  function examPool(pack, day=koreaDay(), rng=Math.random) {
+  function examPool(pack, day=koreaDay(), rng=Math.random, includeVideo=true) {
     require(pack.manifest,'模拟考试需要整份导入内容通过官方原件指纹比对');
     require(pack.bank.effective_date<=day,'这个版本尚未生效，只能预习');
     const scope = pack.manifest.ordinary_ranges;
     const eligible=pack.bank.questions.filter(q=>pack.ready[q.question_id]&&scope.some(([a,b])=>+q.question_id>=a&&+q.question_id<=b));
-    const videos=eligible.filter(q=>q.media_kind==='video');
+    const videos=includeVideo?eligible.filter(q=>q.media_kind==='video'):[];
     const rest=eligible.filter(q=>q.media_kind!=='video');
     const selected=shuffled(rest,rng).slice(0,EXAM_LENGTH-Number(!!videos.length));
     if(videos.length) selected.push(shuffled(videos,rng)[0]);

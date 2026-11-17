@@ -3,17 +3,23 @@
   const payload=document.getElementById('app-data');
   const {manifests,rules,banks:embedded,assets}=JSON.parse(payload.textContent);
   payload.remove();
-  for(const bank of embedded)for(const q of bank.questions)for(const field of ['image_asset','video_asset'])
-    if(Number.isInteger(q[field]))q[field]=assets[q[field]];
+  const localVideos=new Map(), loopback=location.origin==='http://127.0.0.1:8787';
+  const videoKey=(version,id)=>version+'/'+id;
+  for(const bank of embedded)for(const q of bank.questions)for(const field of ['image_asset','video_asset']){
+    if(!Number.isInteger(q[field]))continue;
+    if(loopback&&field==='video_asset')localVideos.set(videoKey(bank.bank_version,q.question_id),q[field]);
+    q[field]=assets[q[field]];
+  }
   assets.length=0;
   const main=document.getElementById('main');
   const empty=()=>({active:null,stats:{},exams:{},ongoing:null});
   const packs=new Map();
   let db, study=empty(), run=null, pending=false, page='', clip=null, timerNotice, saveQueue=Promise.resolve();
+  let examVideo=!!document.createElement('video').canPlayType('video/mp4');
   let filters={topic:'',trap:'',media:'',audit:'verified',incomplete:false}, examView=null;
   const labels={sequence:'顺序练习',random:'随机练习',wrong:'历史错题',favorite:'我的收藏',due:'到期复习',intensive:'考前集中复习'};
   const sectionLabels={home:'练习',rules:'规则对照',data:'数据管理'};
-  const scorePolicy='官方公开说明确认从题库出题，共 40 题、40 分钟；一类普通合格线 70 分，二类普通 60 分。应用从已核验且素材齐全的题目中自行随机组卷，有可用视频时抽一道。未核实官方逐题分值及题型配比，因此只报告答对、答错与未答题数。';
+  const scorePolicy='官方公开说明确认从题库出题，共 40 题、40 分钟；一类普通合格线 70 分，二类普通 60 分。应用从已核验且素材齐全的题目中自行随机组卷，可选择加入一道视频题。未核实官方逐题分值及题型配比，因此只报告答对、答错与未答题数。';
   const movieSite='https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovieList.do?menuCd=MN-PO-1153';
   const route=()=>['home','rules','data','quiz','result'].includes(location.hash.slice(1))?location.hash.slice(1):'home';
   const E=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
@@ -115,6 +121,7 @@
       '<section class="panel"><p class="kicker">计时组卷</p><h2>模拟考试</h2><p class="muted">'+E(scorePolicy)+'</p>'+
       '<div class="row">'+select('驾照类别','license',[['1','一类普通（1종 보통）'],['2','二类普通（2종 보통）']],'2')+
       button(study.ongoing?'继续进行中的模拟':'开始 40 题模拟','exam','primary',!study.ongoing&&!canExam)+'</div>'+
+      (cov.vidOK&&!study.ongoing?'<label class="check"><input id="exam-video" type="checkbox" '+(examVideo?'checked':'')+'>模拟包含视频题</label>':'')+
       (last?'<p class="spaced small">最近一次：答对 '+last.correct+'、答错 '+wrongs(last)+'、未答 '+last.blank+'。'+button('查看本次错题','history')+'</p>':'')+
       (!canExam&&!study.ongoing?note('需要已生效的官方版本，并至少有 40 道完整可用的普通驾照题。'):'')+'</section>';
   }
@@ -161,7 +168,7 @@
   function startExam(){
     if(!study.ongoing){
       const pack=current();
-      const qs=Quiz.examPool(pack);
+      const qs=Quiz.examPool(pack,Quiz.koreaDay(),Math.random,examVideo);
       study.ongoing={key:pack.key,license:document.getElementById('license').value,ends:Date.now()+Quiz.EXAM_MS,
         ids:qs.map(q=>q.question_id),index:0,answers:{}};
       save();
@@ -211,7 +218,7 @@
       return '<label class="option '+(correct?'ok':checked&&picked?'miss':'')+'"><input data-answer name="answer" type="'+(q.question_type==='single'?'radio':'checkbox')+'" value="'+E(o.id)+'"'+
         (picked?' checked':'')+(checked?' disabled':'')+'><b>'+E(o.id)+'．</b><span>'+E(o.text)+(correct?' <b>✓</b>':'')+'</span></label>';
     }).join('');
-    const mediaMarkup=material(q)?(q.media_kind==='image'?'<img id="asset" class="media" alt="官方题目附图">':'<video id="asset" class="media" controls preload="metadata" playsinline aria-label="视频题素材"></video>'):
+    const mediaMarkup=material(q)?(q.media_kind==='image'?'<img id="asset" class="media" alt="题目附图">':'<video id="asset" class="media" controls preload="metadata" playsinline aria-label="视频题素材"></video>'):
       q.media_kind==='none'?'':note('缺少这道题的'+(q.media_kind==='image'?'图片':'视频')+'；用原件核对后再作答。'+(q.media_kind==='video'?' '+link('官方视频题库',movieSite):''));
     const stats=pstats(id,run.key);
     const answered=run.questions.filter(q=>run.answers[q.question_id]?.length).length;
@@ -279,11 +286,23 @@
     if(page==='quiz'&&run){
       const q=run.questions[run.index], asset=document.getElementById('asset');
       if(asset){
-        const data=material(q), split=data.indexOf(',');
-        const bytes=Quiz.base64(data.slice(split+1));
-        clip=URL.createObjectURL(new Blob([bytes],{type:data.slice(5,split-7)}));
-        asset.addEventListener('error',()=>notify('浏览器无法解码这道题的素材，可换用支持该格式的浏览器。'),{once:true});
-        asset.src=clip;
+        const pack=packs.get(run.key),data=material(q);
+        const local=q.media_kind==='video'&&pack.media[q.question_id]==='素材已核验' ?
+          localVideos.get(videoKey(pack.bank.bank_version,q.question_id)) : undefined;
+        const sources=local!==undefined?['/media/'+local+'.mp4',data]:[data];
+        const split=data.indexOf(',');
+        if(local===undefined){
+          const bytes=Quiz.base64(data.slice(split+1));
+          clip=URL.createObjectURL(new Blob([bytes],{type:data.slice(5,split-7)}));
+          sources.unshift(clip);
+        }
+        asset.addEventListener('error',()=>{
+          if(!asset.isConnected)return;
+          if(sources.length){asset.src=sources.shift();return;}
+          if(q.media_kind==='video')examVideo=false;
+          notify(q.media_kind==='video'?'当前浏览器未能播放视频。下次模拟可取消「模拟包含视频题」。':'当前浏览器未能显示该图片。');
+        });
+        asset.src=sources.shift();
       }
     }
     if(focus){(document.getElementById('prompt')||main).focus({preventScroll:true});window.scrollTo(0,0);}
@@ -411,6 +430,7 @@
   main.addEventListener('change',ev=>{
     const el=ev.target;
     if(el.matches('[data-answer]')){choose(el);return;}
+    if(el.id==='exam-video'){examVideo=el.checked;return;}
     if(el.id==='bank'&&packs.has(el.value)){
       study.active=el.value;filters={topic:'',trap:'',media:'',audit:current().manifest?'verified':'all',incomplete:false};save();render();return;
     }
@@ -469,6 +489,7 @@
     try {saved=await db.load();if(saved.study)study=saved.study;}
     catch{notify('本地存储读取失败。若有备份，请从数据管理恢复。');}
     for(const raw of [...saved?.banks||[],...embedded]){
+      main.firstElementChild.textContent='正在核对本地题库与素材…';
       try{await addBank(raw,false);}catch{notify('一份已存在的题库无法通过校验。');}
     }
     if(!current())study.active=preferred();

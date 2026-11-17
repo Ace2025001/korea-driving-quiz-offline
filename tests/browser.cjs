@@ -14,7 +14,8 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
     const page=await context.newPage();
     page.on('pageerror',e=>errors.push(e.message));
     const network=[];
-    page.on('request',r=>{if(/^https?:/.test(r.url()))network.push(r.url());});
+    const loopback=process.env.QUIZ_PRIVATE_URL;
+    page.on('request',r=>{if(/^https?:/.test(r.url())&&!(loopback&&r.url().startsWith(loopback)))network.push(r.url());});
     await page.clock.install({time:new Date('2026-11-17T10:00:00+09:00')});
     const click=action=>page.locator('[data-do="'+action+'"]').click({timeout:12000});
     const text=(part)=>page.getByText(part,{exact:false}).first().waitFor({state:'visible',timeout:12000});
@@ -77,8 +78,13 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
     await restore.getByText('测试占位符 1：请选择测试选项').waitFor();
     await destination.close();
     console.log('离线 '+name+'：公开版、题库导入、单选、多选、收藏、错题、持久保存、跨会话完整恢复通过');
-    if(process.env.QUIZ_PRIVATE_HTML){
-      await page.goto(link(process.env.QUIZ_PRIVATE_HTML),{timeout:60000});
+    if(process.env.QUIZ_PRIVATE_HTML||loopback){
+      if(loopback){
+        assert.equal(loopback,'http://127.0.0.1:8787/');
+        await page.route(/^https?:\/\//,r=>r.request().url().startsWith(loopback)?r.continue():r.abort());
+        await context.setOffline(false);
+      }
+      await page.goto(loopback||link(process.env.QUIZ_PRIVATE_HTML),{timeout:60000});
       await page.getByText('今天练哪一组？').waitFor({timeout:55000});
       const bank=page.locator('#bank');
       await bank.selectOption({label:(await bank.locator('option').allTextContents()).find(x=>x.startsWith('2026-11-30'))});
@@ -89,12 +95,17 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
       await click('practice:sequence');
       await waitMedia('img.media','naturalWidth',1);
       await page.locator('nav a[href="#home"]').click();
-      await page.locator('#media').selectOption('video');
-      await click('practice:sequence');
-      await waitMedia('video.media','readyState',1);
-      await page.locator('video').evaluate(v=>v.play());
-      await waitMedia('video.media','currentTime',0.01);
-      await page.locator('nav a[href="#home"]').click();
+      if(!process.env.QUIZ_SKIP_VIDEO_TEST){
+        await page.locator('#media').selectOption('video');
+        await click('practice:sequence');
+        await waitMedia('video.media','readyState',1);
+        await page.locator('video').evaluate(v=>{v.play().catch(()=>{});});
+        await waitMedia('video.media','currentTime',0.01);
+        if(loopback)assert((await page.locator('video').evaluate(v=>v.currentSrc)).startsWith(loopback+'media/'));
+        await page.locator('nav a[href="#home"]').click();
+      }else{
+        await page.locator('#exam-video').uncheck();
+      }
       await click('exam');
       await text('第 1 / 40 题');
       assert.equal(await page.getByText('公布答案：').count(),0);
@@ -117,7 +128,7 @@ const link=(file,hash='')=>pathToFileURL(path.resolve(root,file)).href+hash;
         await page.locator('nav a[href="#home"]').click();
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
       }
-      console.log('真实题库离线体验：图片、视频播放、新版锁定、40 题组卷、刷新续考、自动/提前交卷、三档视口通过');
+      console.log('真实题库离线体验：图片、'+(process.env.QUIZ_SKIP_VIDEO_TEST?'无视频组卷':'视频播放')+'、新版锁定、40 题组卷、刷新续考、自动/提前交卷、三档视口通过');
     }
     assert.deepEqual(errors,[]);
     assert.deepEqual(network,[]);

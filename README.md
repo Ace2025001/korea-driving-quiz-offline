@@ -16,6 +16,8 @@
 
 在「数据管理」导出**完整备份**可迁移题库、收藏、统计、错题和模拟记录；**轻量备份**只含学习记录，目标设备先导入相同版本和内容。恢复会替换当地已有的学习记录。请把备份另存到系统文件夹或其他设备，IndexedDB、localStorage 都可能被浏览器清理。如果设备无法持久写入，页面会提示在关闭前导出。
 
+如果浏览器无法播放自带视频，可取消「模拟包含视频题」，或用轻量版练习。
+
 ## 练习与考试
 
 顺序练、随机练、历史错题、收藏、到期复习、考前集中复习均可按主题、素材、核验状态和易错点筛选。提交后显示中文公布答案、可关联的中文考点，以及有对应证据的韩文官方解析原文。错题约 10 分钟后到期；连续答对按 1、3、7、14、30、60 天延长间隔，反复答错优先。
@@ -36,7 +38,7 @@ py tools/convert.py --version 2026-11-30 --download --download-korean
 
 脚本核对附件 SHA-256，将两个 `.bank.json` 保存到被 Git 忽略的 `private` 目录。也可在 [KoROAD 外语题库列表](https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardEngList.do) 手动下载「중국어 (1·2종)」附件，将 `--download` 换为 `--pdf "你的PDF路径"`，并用 `--ko-pdf "同版韩文PDF路径"` 附加官方韩文解析。如果只提供中文 PDF，中文题干、答案和图片正常导入。
 
-如需视频，准备支持 libx264 的 FFmpeg，第一次转换加入 `--download-videos`。本项会从官网取 35 段，原件合计超过 1 GB；建议在电脑上处理。已有本地 H.264 MP4 时用 `--videos "MP4文件夹"`（文件名例如 `966.mp4`）。媒体若因不同 FFmpeg 编译版本转出不同字节，会标为「素材未核验」并从模拟排除，仍可自行练习。
+如需视频，准备支持 libx264 的 FFmpeg。第一版转换时加入 `--download-videos --videos private/videos`，另一版可用 `--videos private/videos` 复用已下载素材。本项会从官网取 35 段，原件合计超过 1 GB；建议在电脑上处理。已有本地 H.264 MP4 时用 `--videos "MP4文件夹"`（文件名例如 `966.mp4`）。媒体若因不同 FFmpeg 编译版本转出不同字节，会标为「素材未核验」并从模拟排除，仍可自行练习。
 
 导入完也可本地打包为自包含私人 HTML：
 
@@ -59,4 +61,4 @@ npm install --no-save --package-lock=false playwright
 npm run test:browser
 ```
 
-浏览器测试使用本机 Edge，设置离线并检查没有 HTTP 请求。真实题库测试可指定 `$env:QUIZ_PRIVATE_HTML = "私人离线版的HTML路径"` 再运行。手机、平板视口仿真不等于实体设备测试。
+浏览器测试默认使用本机 Edge，设置离线并检查没有 HTTP 请求。真实题库测试可指定 `$env:QUIZ_PRIVATE_HTML = "私人离线版的HTML路径"`。验证 iPad 辅助程序时，可启动本机版后设置 `QUIZ_BROWSER=webkit` 和 `QUIZ_PRIVATE_URL=http://127.0.0.1:8787/`；测试只允许回环网络请求。手机、平板视口仿真不等于实体设备测试。
