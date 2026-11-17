@@ -1,0 +1,636 @@
+{
+  "2026-03-09": {
+    "1000": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130755&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1711",
+      "sha256": "c104361e7d4d53a7f9ce97fe0595cb39ff079392b16df12705cc932698c87fe6",
+      "offline_sha256": "ddb43450b098ce27f3cbd9794d637cc35e36e7b7be1480ce6fcfcd490b82183f",
+      "bytes": 62824511,
+      "offline_bytes": 2745011,
+      "duration": 25.166667
+    },
+    "966": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114201&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1301",
+      "sha256": "56f2844d80eb7e7161dce99621e09d8697bf9372e9ca64c956d79c4046ee0b1b",
+      "offline_sha256": "ae7c2d3270e44c14751b7569299c9cc0800d5a4b0f4940471351692fa2007066",
+      "bytes": 16496947,
+      "offline_bytes": 2272424,
+      "duration": 23.405714
+    },
+    "967": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114203&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1302",
+      "sha256": "a4c8ee8d5b3cf4afbad026b0204c9532cdc6502bad8c68eb034ed0168a315aa5",
+      "offline_sha256": "1e35afef1af4ac79924b7f935c3aceeb73bc6fc6d7402862d4ee70056bdc0638",
+      "bytes": 8453498,
+      "offline_bytes": 1149295,
+      "duration": 20.066016
+    },
+    "968": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114205&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1303",
+      "sha256": "356d05fb53890b5fc742bd3bdcb245882ac75ca4c5cb3ed6b5a23bf039390cf1",
+      "offline_sha256": "465a743bc947f10d223f6ead04c3d9c13df3ebd5a2e40625a09f0725890134d0",
+      "bytes": 5831873,
+      "offline_bytes": 934983,
+      "duration": 17.966016
+    },
+    "969": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072513&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=563",
+      "sha256": "bbec0f972234baf6d854ba2f1fd46c893f25d1c709da78cdf1614d146cfe94c5",
+      "offline_sha256": "744d5b84db5338712ed53dd960af3c4f31eb97741a8fbc0626e1a62fae5e74e4",
+      "bytes": 28890815,
+      "offline_bytes": 1223177,
+      "duration": 27.59796
+    },
+    "970": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114206&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1304",
+      "sha256": "4bf9e8db9b2c87aebe7bb3a81b698d8e20c55245625638f8aa013b92207b5b5d",
+      "offline_sha256": "fa49a8da32f9bce904dfa93e40e905f2b79cc209e226355116a3b42f46067f63",
+      "bytes": 10095144,
+      "offline_bytes": 1356706,
+      "duration": 20.466667
+    },
+    "971": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114207&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1305",
+      "sha256": "02832df5bae3f6ab3f1d17d23a10b2ea4610189dc198a1ad3d9b62f39fff9452",
+      "offline_sha256": "92d7c3f80318d03b16a1ae367a91667ab08e0f3b6e00691beb5ec168eb47153f",
+      "bytes": 9991323,
+      "offline_bytes": 1428683,
+      "duration": 29.233008
+    },
+    "972": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072516&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=564",
+      "sha256": "e1da0883b617d9b35d2a1421baaedddc143c631e6d641e06fe0f16ff9c34ccc8",
+      "offline_sha256": "5af6a9ea4fdc557da897af11c73d41de01163cdf21d9fa4be5f58c7672d79775",
+      "bytes": 35514839,
+      "offline_bytes": 1626473,
+      "duration": 31.545352
+    },
+    "973": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1526",
+      "sha256": "cd0cba449204a7733f01443d9d05bdf46cb4da84d8906812c4bdc24a68a56223",
+      "offline_sha256": "973d4622a9ec2844c3873eea8a7469cdf4b5638fa6a162bacd67f76fe0abd54b",
+      "bytes": 35192275,
+      "offline_bytes": 1566508,
+      "duration": 18.041667
+    },
+    "974": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=3",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1527",
+      "sha256": "49ba4a00650870585befe5bcc3771e912f255c1ddbf54bdb6c3cc6eb7e61ba09",
+      "offline_sha256": "289bdecec701d3d8d12e8e70034ee89e80c9910f0e93d1674e8aef85942d1743",
+      "bytes": 31170398,
+      "offline_bytes": 1094389,
+      "duration": 16.5
+    },
+    "975": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=4",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1528",
+      "sha256": "d5bc04341c1cc9f0a079311efbd65ef8ef5a5a786550b770f38a0e1452c2f6fb",
+      "offline_sha256": "a1c5b6f7de71bc3570cc36f3b00341c47a845d919bc24c02f4bc6e7802f297c5",
+      "bytes": 33886932,
+      "offline_bytes": 1383437,
+      "duration": 14.033333
+    },
+    "976": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=1",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1529",
+      "sha256": "2c09b3f63071e14fffdb671a5313d07fb18a67f9f248de92525c6f8ec35e5a5c",
+      "offline_sha256": "4f0ed5faa890a1296a41f50178e1d9b0c9c0cc2e2cb69642d1dd689ae33b57dc",
+      "bytes": 47640848,
+      "offline_bytes": 1388632,
+      "duration": 12.366667
+    },
+    "977": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=2",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1530",
+      "sha256": "fde33d9df9b3791efc6330be8b30091f9ec5604394c3f9e010b8b7239d2e3b84",
+      "offline_sha256": "904c37a869f0c5aebb82c54f5ff05c5d0cbff168eba7b1e845492cfc50df7fa3",
+      "bytes": 22324530,
+      "offline_bytes": 1294238,
+      "duration": 14.0
+    },
+    "978": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130744&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1706",
+      "sha256": "f0b162d04e662521ccee22c4d5e4fd0be793fe58a709e562432e917530eb989a",
+      "offline_sha256": "3e66caceffab3d1c57c65f080a1288a9da90c421023af7405c2f57a4d7ef9e7e",
+      "bytes": 32779119,
+      "offline_bytes": 1350272,
+      "duration": 13.033333
+    },
+    "979": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114208&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1306",
+      "sha256": "2705390243854a8374a5521436f9d3af926fa6d7ad3e9c13c674deb36ed7b2c6",
+      "offline_sha256": "c0b21ff3356f014f40694c9dbbb58134d36a2f28ca7acb22ae5d37f6051814e0",
+      "bytes": 9461008,
+      "offline_bytes": 1219857,
+      "duration": 23.4
+    },
+    "980": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114209&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1307",
+      "sha256": "0c90f6e528085c4297307fd15c3617ad5ec31c06bfbda92f553d3d8d8176aaeb",
+      "offline_sha256": "dd0f0ba27a7d78409503d3a72d6a85048fabd7bab3de1cab9ec7c78ae7235ab6",
+      "bytes": 7115821,
+      "offline_bytes": 720766,
+      "duration": 23.4
+    },
+    "981": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134238&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1786",
+      "sha256": "81a601ad4db28674ea74fc88ebf4f05c5d484df19d449d16da6c95f304a1f539",
+      "offline_sha256": "cb376b2a52243048daedc2aba4a050bafe27a9d35218d2e04a56722d2eb86642",
+      "bytes": 63036499,
+      "offline_bytes": 2293247,
+      "duration": 26.693333
+    },
+    "982": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134240&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1787",
+      "sha256": "ecf95eea7f53942103104b2ce84c46adb6e6121287ae3344b5aefda30c4467f2",
+      "offline_sha256": "b303b9a787153a2d6e7521271b3514e9db0db2d885d10a2f180cff7783189346",
+      "bytes": 35796543,
+      "offline_bytes": 1503926,
+      "duration": 15.033333
+    },
+    "983": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134242&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1788",
+      "sha256": "82230297a7fd6b0b898adfeb123bb0cf926413f76b1d99359bacd4316677caf2",
+      "offline_sha256": "41f963d48a33a0ccae24751157d6f66030e6ef0b964641114ecd6a14b51bcd88",
+      "bytes": 71005870,
+      "offline_bytes": 1968426,
+      "duration": 30.033333
+    },
+    "984": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134245&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1789",
+      "sha256": "89e0987f41316195da883fa42fe5f2140de948e0650ccb33ca0fb8cc77b08d7a",
+      "offline_sha256": "f3adcdc4467495c39e33f0eb0c179f40272f402e7bd18390db498ad4dd1e1635",
+      "bytes": 38304441,
+      "offline_bytes": 1683151,
+      "duration": 16.033008
+    },
+    "985": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134248&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1790",
+      "sha256": "e4ca11716e15e591f21940a83d18ef7066abd2e461a7914608a525cf8fbda336",
+      "offline_sha256": "2d8e12fe84215f0693e34b8e6bd43d25ed18c625796f859f2cd2a6482aa6cf7a",
+      "bytes": 29022071,
+      "offline_bytes": 946036,
+      "duration": 12.033333
+    },
+    "986": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130753&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1710",
+      "sha256": "c96dfb1ae48ae89865dacf192ab98744c061fc1b8282acb99b297745dd66aecc",
+      "offline_sha256": "71b441bb4e08cb65986551cd9ca04b9eb17d47caef35b21ebbf35cf33095792a",
+      "bytes": 65361384,
+      "offline_bytes": 2557713,
+      "duration": 26.9
+    },
+    "987": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114210&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1308",
+      "sha256": "ebee76428f6ae3e4f318406a14f02379ddeda4f2b8a1eee8160f2a4d8246e71f",
+      "offline_sha256": "a1b82acb4419752df36c63dccb74e0832e393ab60dd61ff462a4a0a876cfc249",
+      "bytes": 8874834,
+      "offline_bytes": 1035336,
+      "duration": 26.7
+    },
+    "988": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134250&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1791",
+      "sha256": "5f488f4de8112be80a8314b751841a65bac0833345c7e4184ccd76375fcbeb79",
+      "offline_sha256": "8e041ec8673a02a3415c65ee3b6d11fa2792fc13e75b2b10e954ae7c9ac7d47a",
+      "bytes": 36845911,
+      "offline_bytes": 1404217,
+      "duration": 15.033333
+    },
+    "989": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130746&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1707",
+      "sha256": "d45dac6b3baf584e612a584d0961327adf2596e60164b45174ab63b63cc6ed54",
+      "offline_sha256": "5b59b5b324ae0c3785c43942ef0bc93f954a53349998f7f7c0578aecb3ba9cad",
+      "bytes": 66137487,
+      "offline_bytes": 2173675,
+      "duration": 26.866667
+    },
+    "990": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134252&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1792",
+      "sha256": "62ab524c8b57cdc74fb68b7d8aba1c2e93a9b31c00ae0b3392b5ef341c5c6ceb",
+      "offline_sha256": "b422a52cf9f0c0378bccea811f70c0ee14f9a71241b00c2f04b6e5cc0260ff8f",
+      "bytes": 50531441,
+      "offline_bytes": 2078648,
+      "duration": 21.033008
+    },
+    "991": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114211&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1309",
+      "sha256": "167c95ca1e9f251e6d747dfae87037f73660cf2a2f10e370fa8776222aa786aa",
+      "offline_sha256": "95c3cdb2bdb431481fd02e34d90924efe594f9c41b15628e186cd4b0aa48c4be",
+      "bytes": 6811543,
+      "offline_bytes": 863247,
+      "duration": 14.033333
+    },
+    "992": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072536&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=566",
+      "sha256": "28b9d97ac3c5809369aea257bb90a88b4561ec6bd12fc65b330424a91584dc2d",
+      "offline_sha256": "f2a74d9f4011a7e3163ee8ff2d5dcb9f40f0cf42c15d52a3a8039b8ef23da392",
+      "bytes": 10043154,
+      "offline_bytes": 1381981,
+      "duration": 18.635261
+    },
+    "993": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130749&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1708",
+      "sha256": "e95450e96665a38e39236407f4cf22410433d84a7169583e1eb79f71b498d089",
+      "offline_sha256": "ded009a19d3bc6ca9108f8b4cada769792f594a2c6fa0721643f201593dcd7ab",
+      "bytes": 49825141,
+      "offline_bytes": 2191206,
+      "duration": 20.033333
+    },
+    "994": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114212&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1310",
+      "sha256": "3ccc84312872606fe4baa3b3df3f99654d482d9c6c908ce4085f7a32933ced67",
+      "offline_sha256": "467ccf3407487b6dfe6c8cfcffc4d7fabffe85ab0925c60f83aab9e2d2af5774",
+      "bytes": 4771694,
+      "offline_bytes": 634353,
+      "duration": 18.4
+    },
+    "995": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072539&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=392",
+      "sha256": "b0220b327880c6457921fdc081cacfb29daaa398a725a9049fb1b4cd06889a34",
+      "offline_sha256": "b9e7e77a10647b7a0706b76e5db378424033e6dc43b888032ae78d10b0ce28c8",
+      "bytes": 5713013,
+      "offline_bytes": 1737951,
+      "duration": 20.39974
+    },
+    "996": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134255&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1793",
+      "sha256": "bdbe29f6f80f5bb648624b7cec036aeac5a4bd2b3d2ba38def4add482e3f5d68",
+      "offline_sha256": "beb6412efb677137972d0f9e6f8106d4232a670ca75dac8ea5acdbb987c2b5f0",
+      "bytes": 38694768,
+      "offline_bytes": 1454741,
+      "duration": 16.033333
+    },
+    "997": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130751&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1709",
+      "sha256": "9ed1642936ec19bbdd9f2c076029acf81aef75c75382a8618a60e79557a5c55b",
+      "offline_sha256": "c20aa2bccfcb8a5ccdf792ec4af6fa2eadcabfc2b0f88b1fafd19a605db4d0f2",
+      "bytes": 46791755,
+      "offline_bytes": 2112139,
+      "duration": 19.233333
+    },
+    "998": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072542&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=389",
+      "sha256": "365091454a777b38dc05ff7f16a887fd6088b056823f443cf02b2ffaf8c2bfcd",
+      "offline_sha256": "3cc21180713311e697f7b2ad5ddbcfffc4ed4bd4ca7d93ccf119bb4a00b2c0b2",
+      "bytes": 6797837,
+      "offline_bytes": 823918,
+      "duration": 24.207813
+    },
+    "999": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072543&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=567",
+      "sha256": "135c108289c89c1f640383eb1f72ba4438420da5d37ea909a152e20ed58f5816",
+      "offline_sha256": "8b5dffcc13e4e6c5d1f5adc1c1e990fd7594edceef6ee47cb9578b82bd142e49",
+      "bytes": 17511549,
+      "offline_bytes": 682286,
+      "duration": 16.220182
+    }
+  },
+  "2026-11-30": {
+    "1000": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130755&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1711",
+      "sha256": "c104361e7d4d53a7f9ce97fe0595cb39ff079392b16df12705cc932698c87fe6",
+      "offline_sha256": "ddb43450b098ce27f3cbd9794d637cc35e36e7b7be1480ce6fcfcd490b82183f",
+      "bytes": 62824511,
+      "offline_bytes": 2745011,
+      "duration": 25.166667
+    },
+    "966": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114201&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1301",
+      "sha256": "56f2844d80eb7e7161dce99621e09d8697bf9372e9ca64c956d79c4046ee0b1b",
+      "offline_sha256": "ae7c2d3270e44c14751b7569299c9cc0800d5a4b0f4940471351692fa2007066",
+      "bytes": 16496947,
+      "offline_bytes": 2272424,
+      "duration": 23.405714
+    },
+    "967": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114203&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1302",
+      "sha256": "a4c8ee8d5b3cf4afbad026b0204c9532cdc6502bad8c68eb034ed0168a315aa5",
+      "offline_sha256": "1e35afef1af4ac79924b7f935c3aceeb73bc6fc6d7402862d4ee70056bdc0638",
+      "bytes": 8453498,
+      "offline_bytes": 1149295,
+      "duration": 20.066016
+    },
+    "968": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114205&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1303",
+      "sha256": "356d05fb53890b5fc742bd3bdcb245882ac75ca4c5cb3ed6b5a23bf039390cf1",
+      "offline_sha256": "465a743bc947f10d223f6ead04c3d9c13df3ebd5a2e40625a09f0725890134d0",
+      "bytes": 5831873,
+      "offline_bytes": 934983,
+      "duration": 17.966016
+    },
+    "969": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072513&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=563",
+      "sha256": "bbec0f972234baf6d854ba2f1fd46c893f25d1c709da78cdf1614d146cfe94c5",
+      "offline_sha256": "744d5b84db5338712ed53dd960af3c4f31eb97741a8fbc0626e1a62fae5e74e4",
+      "bytes": 28890815,
+      "offline_bytes": 1223177,
+      "duration": 27.59796
+    },
+    "970": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114206&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1304",
+      "sha256": "4bf9e8db9b2c87aebe7bb3a81b698d8e20c55245625638f8aa013b92207b5b5d",
+      "offline_sha256": "fa49a8da32f9bce904dfa93e40e905f2b79cc209e226355116a3b42f46067f63",
+      "bytes": 10095144,
+      "offline_bytes": 1356706,
+      "duration": 20.466667
+    },
+    "971": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114207&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1305",
+      "sha256": "02832df5bae3f6ab3f1d17d23a10b2ea4610189dc198a1ad3d9b62f39fff9452",
+      "offline_sha256": "92d7c3f80318d03b16a1ae367a91667ab08e0f3b6e00691beb5ec168eb47153f",
+      "bytes": 9991323,
+      "offline_bytes": 1428683,
+      "duration": 29.233008
+    },
+    "972": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072516&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=564",
+      "sha256": "e1da0883b617d9b35d2a1421baaedddc143c631e6d641e06fe0f16ff9c34ccc8",
+      "offline_sha256": "5af6a9ea4fdc557da897af11c73d41de01163cdf21d9fa4be5f58c7672d79775",
+      "bytes": 35514839,
+      "offline_bytes": 1626473,
+      "duration": 31.545352
+    },
+    "973": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1526",
+      "sha256": "cd0cba449204a7733f01443d9d05bdf46cb4da84d8906812c4bdc24a68a56223",
+      "offline_sha256": "973d4622a9ec2844c3873eea8a7469cdf4b5638fa6a162bacd67f76fe0abd54b",
+      "bytes": 35192275,
+      "offline_bytes": 1566508,
+      "duration": 18.041667
+    },
+    "974": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=3",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1527",
+      "sha256": "49ba4a00650870585befe5bcc3771e912f255c1ddbf54bdb6c3cc6eb7e61ba09",
+      "offline_sha256": "289bdecec701d3d8d12e8e70034ee89e80c9910f0e93d1674e8aef85942d1743",
+      "bytes": 31170398,
+      "offline_bytes": 1094389,
+      "duration": 16.5
+    },
+    "975": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=4",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1528",
+      "sha256": "d5bc04341c1cc9f0a079311efbd65ef8ef5a5a786550b770f38a0e1452c2f6fb",
+      "offline_sha256": "a1c5b6f7de71bc3570cc36f3b00341c47a845d919bc24c02f4bc6e7802f297c5",
+      "bytes": 33886932,
+      "offline_bytes": 1383437,
+      "duration": 14.033333
+    },
+    "976": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=1",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1529",
+      "sha256": "2c09b3f63071e14fffdb671a5313d07fb18a67f9f248de92525c6f8ec35e5a5c",
+      "offline_sha256": "4f0ed5faa890a1296a41f50178e1d9b0c9c0cc2e2cb69642d1dd689ae33b57dc",
+      "bytes": 47640848,
+      "offline_bytes": 1388632,
+      "duration": 12.366667
+    },
+    "977": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00122442&fileSn=2",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1530",
+      "sha256": "fde33d9df9b3791efc6330be8b30091f9ec5604394c3f9e010b8b7239d2e3b84",
+      "offline_sha256": "904c37a869f0c5aebb82c54f5ff05c5d0cbff168eba7b1e845492cfc50df7fa3",
+      "bytes": 22324530,
+      "offline_bytes": 1294238,
+      "duration": 14.0
+    },
+    "978": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130744&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1706",
+      "sha256": "f0b162d04e662521ccee22c4d5e4fd0be793fe58a709e562432e917530eb989a",
+      "offline_sha256": "3e66caceffab3d1c57c65f080a1288a9da90c421023af7405c2f57a4d7ef9e7e",
+      "bytes": 32779119,
+      "offline_bytes": 1350272,
+      "duration": 13.033333
+    },
+    "979": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114208&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1306",
+      "sha256": "2705390243854a8374a5521436f9d3af926fa6d7ad3e9c13c674deb36ed7b2c6",
+      "offline_sha256": "c0b21ff3356f014f40694c9dbbb58134d36a2f28ca7acb22ae5d37f6051814e0",
+      "bytes": 9461008,
+      "offline_bytes": 1219857,
+      "duration": 23.4
+    },
+    "980": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114209&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1307",
+      "sha256": "0c90f6e528085c4297307fd15c3617ad5ec31c06bfbda92f553d3d8d8176aaeb",
+      "offline_sha256": "dd0f0ba27a7d78409503d3a72d6a85048fabd7bab3de1cab9ec7c78ae7235ab6",
+      "bytes": 7115821,
+      "offline_bytes": 720766,
+      "duration": 23.4
+    },
+    "981": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134238&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1786",
+      "sha256": "81a601ad4db28674ea74fc88ebf4f05c5d484df19d449d16da6c95f304a1f539",
+      "offline_sha256": "cb376b2a52243048daedc2aba4a050bafe27a9d35218d2e04a56722d2eb86642",
+      "bytes": 63036499,
+      "offline_bytes": 2293247,
+      "duration": 26.693333
+    },
+    "982": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134240&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1787",
+      "sha256": "ecf95eea7f53942103104b2ce84c46adb6e6121287ae3344b5aefda30c4467f2",
+      "offline_sha256": "b303b9a787153a2d6e7521271b3514e9db0db2d885d10a2f180cff7783189346",
+      "bytes": 35796543,
+      "offline_bytes": 1503926,
+      "duration": 15.033333
+    },
+    "983": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134242&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1788",
+      "sha256": "82230297a7fd6b0b898adfeb123bb0cf926413f76b1d99359bacd4316677caf2",
+      "offline_sha256": "41f963d48a33a0ccae24751157d6f66030e6ef0b964641114ecd6a14b51bcd88",
+      "bytes": 71005870,
+      "offline_bytes": 1968426,
+      "duration": 30.033333
+    },
+    "984": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134245&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1789",
+      "sha256": "89e0987f41316195da883fa42fe5f2140de948e0650ccb33ca0fb8cc77b08d7a",
+      "offline_sha256": "f3adcdc4467495c39e33f0eb0c179f40272f402e7bd18390db498ad4dd1e1635",
+      "bytes": 38304441,
+      "offline_bytes": 1683151,
+      "duration": 16.033008
+    },
+    "985": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134248&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1790",
+      "sha256": "e4ca11716e15e591f21940a83d18ef7066abd2e461a7914608a525cf8fbda336",
+      "offline_sha256": "2d8e12fe84215f0693e34b8e6bd43d25ed18c625796f859f2cd2a6482aa6cf7a",
+      "bytes": 29022071,
+      "offline_bytes": 946036,
+      "duration": 12.033333
+    },
+    "986": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130753&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1710",
+      "sha256": "c96dfb1ae48ae89865dacf192ab98744c061fc1b8282acb99b297745dd66aecc",
+      "offline_sha256": "71b441bb4e08cb65986551cd9ca04b9eb17d47caef35b21ebbf35cf33095792a",
+      "bytes": 65361384,
+      "offline_bytes": 2557713,
+      "duration": 26.9
+    },
+    "987": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114210&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1308",
+      "sha256": "ebee76428f6ae3e4f318406a14f02379ddeda4f2b8a1eee8160f2a4d8246e71f",
+      "offline_sha256": "a1b82acb4419752df36c63dccb74e0832e393ab60dd61ff462a4a0a876cfc249",
+      "bytes": 8874834,
+      "offline_bytes": 1035336,
+      "duration": 26.7
+    },
+    "988": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134250&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1791",
+      "sha256": "5f488f4de8112be80a8314b751841a65bac0833345c7e4184ccd76375fcbeb79",
+      "offline_sha256": "8e041ec8673a02a3415c65ee3b6d11fa2792fc13e75b2b10e954ae7c9ac7d47a",
+      "bytes": 36845911,
+      "offline_bytes": 1404217,
+      "duration": 15.033333
+    },
+    "989": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130746&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1707",
+      "sha256": "d45dac6b3baf584e612a584d0961327adf2596e60164b45174ab63b63cc6ed54",
+      "offline_sha256": "5b59b5b324ae0c3785c43942ef0bc93f954a53349998f7f7c0578aecb3ba9cad",
+      "bytes": 66137487,
+      "offline_bytes": 2173675,
+      "duration": 26.866667
+    },
+    "990": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134252&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1792",
+      "sha256": "62ab524c8b57cdc74fb68b7d8aba1c2e93a9b31c00ae0b3392b5ef341c5c6ceb",
+      "offline_sha256": "b422a52cf9f0c0378bccea811f70c0ee14f9a71241b00c2f04b6e5cc0260ff8f",
+      "bytes": 50531441,
+      "offline_bytes": 2078648,
+      "duration": 21.033008
+    },
+    "991": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114211&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1309",
+      "sha256": "167c95ca1e9f251e6d747dfae87037f73660cf2a2f10e370fa8776222aa786aa",
+      "offline_sha256": "95c3cdb2bdb431481fd02e34d90924efe594f9c41b15628e186cd4b0aa48c4be",
+      "bytes": 6811543,
+      "offline_bytes": 863247,
+      "duration": 14.033333
+    },
+    "992": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072536&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=566",
+      "sha256": "28b9d97ac3c5809369aea257bb90a88b4561ec6bd12fc65b330424a91584dc2d",
+      "offline_sha256": "f2a74d9f4011a7e3163ee8ff2d5dcb9f40f0cf42c15d52a3a8039b8ef23da392",
+      "bytes": 10043154,
+      "offline_bytes": 1381981,
+      "duration": 18.635261
+    },
+    "993": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130749&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1708",
+      "sha256": "e95450e96665a38e39236407f4cf22410433d84a7169583e1eb79f71b498d089",
+      "offline_sha256": "ded009a19d3bc6ca9108f8b4cada769792f594a2c6fa0721643f201593dcd7ab",
+      "bytes": 49825141,
+      "offline_bytes": 2191206,
+      "duration": 20.033333
+    },
+    "994": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00114212&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1310",
+      "sha256": "3ccc84312872606fe4baa3b3df3f99654d482d9c6c908ce4085f7a32933ced67",
+      "offline_sha256": "467ccf3407487b6dfe6c8cfcffc4d7fabffe85ab0925c60f83aab9e2d2af5774",
+      "bytes": 4771694,
+      "offline_bytes": 634353,
+      "duration": 18.4
+    },
+    "995": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072539&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=392",
+      "sha256": "b0220b327880c6457921fdc081cacfb29daaa398a725a9049fb1b4cd06889a34",
+      "offline_sha256": "b9e7e77a10647b7a0706b76e5db378424033e6dc43b888032ae78d10b0ce28c8",
+      "bytes": 5713013,
+      "offline_bytes": 1737951,
+      "duration": 20.39974
+    },
+    "996": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00134255&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1793",
+      "sha256": "bdbe29f6f80f5bb648624b7cec036aeac5a4bd2b3d2ba38def4add482e3f5d68",
+      "offline_sha256": "beb6412efb677137972d0f9e6f8106d4232a670ca75dac8ea5acdbb987c2b5f0",
+      "bytes": 38694768,
+      "offline_bytes": 1454741,
+      "duration": 16.033333
+    },
+    "997": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00130751&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=1709",
+      "sha256": "9ed1642936ec19bbdd9f2c076029acf81aef75c75382a8618a60e79557a5c55b",
+      "offline_sha256": "c20aa2bccfcb8a5ccdf792ec4af6fa2eadcabfc2b0f88b1fafd19a605db4d0f2",
+      "bytes": 46791755,
+      "offline_bytes": 2112139,
+      "duration": 19.233333
+    },
+    "998": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072542&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=389",
+      "sha256": "365091454a777b38dc05ff7f16a887fd6088b056823f443cf02b2ffaf8c2bfcd",
+      "offline_sha256": "3cc21180713311e697f7b2ad5ddbcfffc4ed4bd4ca7d93ccf119bb4a00b2c0b2",
+      "bytes": 6797837,
+      "offline_bytes": 823918,
+      "duration": 24.207813
+    },
+    "999": {
+      "url": "https://www.koroad.or.kr/file/FileDown.do?atchFileId=FID00072543&fileSn=0",
+      "source_url": "https://www.safedriving.or.kr/subExamBoard/selectSubExamBoardMovie.do?menuCd=MN-PO-1153&bbscttSn=567",
+      "sha256": "135c108289c89c1f640383eb1f72ba4438420da5d37ea909a152e20ed58f5816",
+      "offline_sha256": "8b5dffcc13e4e6c5d1f5adc1c1e990fd7594edceef6ee47cb9578b82bd142e49",
+      "bytes": 17511549,
+      "offline_bytes": 682286,
+      "duration": 16.220182
+    }
+  }
+}

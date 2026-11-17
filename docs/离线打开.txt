@@ -1,0 +1,34 @@
+韩驾学科 · 私人离线包
+
+解压到固定文件夹再打开。完整版内含 2026-03-09 和 2026-11-30 两个官方中文题库，图片及视频都内置。轻量版本不含视频，仍可学习文字题、图片题和做 40 题模拟。
+
+Windows 11
+  双击 index.html，用 Edge 或 Chrome 打开。无需联网。
+
+小米 Android
+  解压到本机存储，用文件管理器选择「使用 Chrome 打开」index.html。
+  如果只显示预览，把文件放到 Download 后在 Chrome 尝试输入：
+  file:///sdcard/Download/index.html
+  先答题后关页重开，确认此设备能保持学习进度。完整版打不开可尝试轻量版。
+
+iPad mini 7
+  「文件」的 HTML 预览不是交互浏览器。先安装 App Store 的 a-Shell。
+  在「文件 → 在我的 iPad → a-Shell」创建 quiz 文件夹，将 index.html 和
+  ipad-local.py 放进去。a-Shell 执行两条命令：
+    cd ~/Documents/quiz
+    python3 ipad-local.py
+  在 Safari 打开 http://127.0.0.1:8787/ 。如果切换应用后 a-Shell 暂停，
+  将 a-Shell 与 Safari 同时放在屏幕上，再刷新。此辅助程序只访问 iPad
+  本机文件，不需要互联网、云服务或其他设备。日后继续用相同地址打开。
+
+学习记录
+  数据管理 → 导出完整备份（含题库）或仅导出学习记录。备份可跨设备恢复。
+  轻量备份恢复前须先打开或导入同一版本题库。恢复会替换现有学习记录。
+  在清浏览器数据、换浏览器或移动 index.html 之前，把备份保存到独立文件夹。
+
+韩国时间 2026-11-30 前，新版仅可预习。
+3 月中文 PDF 第 761 题图位为空；该题默认不上卷。
+没有可靠的官方逐题分值，因此模拟显示答对、答错、未答题数。
+
+本包的 KoROAD 题文和素材仅供个人学习，请勿向公众上传、分发。
+公开源代码：https://github.com/Ace2025001/korea-driving-quiz-offline
